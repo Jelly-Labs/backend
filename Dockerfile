@@ -14,7 +14,6 @@ WORKDIR /usr/src/app
 COPY package.json ./
 RUN npm install
 COPY --from=appbuild /usr/src/app/dist ./dist
-COPY .env ./
 COPY src/abi ./src/abi
 EXPOSE 3000
 ENV NODE_ENV=prod
