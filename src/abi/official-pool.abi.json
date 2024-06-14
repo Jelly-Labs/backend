@@ -1,0 +1,225 @@
+{
+    "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "pendingOwner_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "inputs": [],
+          "name": "OfficialPoolsRegister_MaxPools50",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Ownable__CallerIsNotOwner",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Ownable__CannotSetOwnerToZeroAddress",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Ownable__CannotTransferToSelf",
+          "type": "error"
+        },
+        {
+          "inputs": [],
+          "name": "Ownable__MustBeProposedOwner",
+          "type": "error"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "poolId",
+              "type": "bytes32"
+            }
+          ],
+          "name": "OfficialPoolDeregistered",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "poolId",
+              "type": "bytes32"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint32",
+              "name": "weight",
+              "type": "uint32"
+            }
+          ],
+          "name": "OfficialPoolRegistered",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferCanceled",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferRequested",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        {
+          "inputs": [],
+          "name": "acceptOwnership",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "cancelOwnershipTransfer",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "getAllOfficialPools",
+          "outputs": [
+            {
+              "internalType": "bytes32[]",
+              "name": "",
+              "type": "bytes32[]"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "getPendingOwner",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "owner",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "bytes32",
+                  "name": "poolId",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint32",
+                  "name": "weight",
+                  "type": "uint32"
+                }
+              ],
+              "internalType": "struct OfficialPoolsRegister.Pool[]",
+              "name": "pools_",
+              "type": "tuple[]"
+            }
+          ],
+          "name": "registerOfficialPool",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "transferOwnership",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        }
+      ]
+}
