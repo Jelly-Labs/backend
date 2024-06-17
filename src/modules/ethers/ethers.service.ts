@@ -17,7 +17,6 @@ export class EthersService {
   private readonly dailySnapshotSmartContract: Contract;
   private readonly governanceSmartContract: Contract;
   private readonly minterSmartContract: Contract;
-  private readonly officialPoolContract: Contract;
 
   constructor(
     private readonly appConfigService: AppConfigService,
@@ -33,11 +32,6 @@ export class EthersService {
     this.dailySnapshotSmartContract = new ethers.Contract(
       this.appConfigService.dailySnapshotAddress(),
       this.appConfigService.dailySnapshotAbi(),
-      this.wallet,
-    );
-    this.officialPoolContract = new ethers.Contract(
-      this.appConfigService.officialPoolAddress(),
-      this.appConfigService.officialPoolAbi(),
       this.wallet,
     );
     this.minterSmartContract = new ethers.Contract(
@@ -92,10 +86,6 @@ export class EthersService {
 
   getMinterSmartContract() {
     return this.minterSmartContract;
-  }
-
-  getOfficialPoolContract() {
-    return this.officialPoolContract;
   }
 
   /**

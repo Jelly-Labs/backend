@@ -59,10 +59,6 @@ export class AppConfigService {
     return this.configService.get('DAILY_SNAPSHOT_ADDRESS');
   }
 
-  officialPoolAddress(): string {
-    return this.configService.get('OFFICIAL_POOL_ADDRESS');
-  }
-
   governanceAddress(): string {
     return this.configService.get('GOVERNANACE_ADDRESS');
   }
@@ -77,20 +73,6 @@ export class AppConfigService {
       'src',
       'abi',
       'daily-snapshot.abi.json',
-    );
-
-    const fileContent = fs.readFileSync(filePath, 'utf-8');
-    const response = JSON.parse(fileContent);
-
-    return response.abi;
-  }
-
-  officialPoolAbi(): any[] {
-    const filePath = path.join(
-      process.cwd(),
-      'src',
-      'abi',
-      'official-pool.abi.json',
     );
 
     const fileContent = fs.readFileSync(filePath, 'utf-8');
