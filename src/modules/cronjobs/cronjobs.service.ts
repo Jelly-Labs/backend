@@ -9,7 +9,7 @@ export class CronjobsService {
 
   constructor(private readonly rewardService: RewardService) {}
 
-  @Cron('29 14 * * *') // every day at 2:29 PM
+  @Cron('29 12 * * *') // every day at 2:29 PM CET
   async dailyReward() {
     this.logger.debug('Running daily reward cron');
     try {
@@ -20,7 +20,7 @@ export class CronjobsService {
     }
   }
 
-  @Cron('30 14 * * 2') // every Tuesday at 2:30 PM
+  @Cron('30 12 * * 2') // every Tuesday at 2:30 PM CETs
   async weeklyMinter() {
     this.logger.debug('Running weekly Jelly inflation reward cron');
     try {
@@ -31,7 +31,7 @@ export class CronjobsService {
     }
   }
 
-  @Cron('0 15 * * 2') // every Tuesday at 3:00 PM
+  @Cron('0 13 * * 2') // every Tuesday at 3:00 PM CET
   async weeklyLPReward() {
     this.logger.debug('Running weekly LP reward cron');
     try {
@@ -43,7 +43,7 @@ export class CronjobsService {
     }
   }
 
-  @Cron('45 14 * * 2') // every Tuesday at 2:45 PMs
+  @Cron('45 12 * * 2') // every Tuesday at 2:45 PM CET
   async weeklyStakingReward() {
     this.logger.debug('Running weekly staking reward cron');
     try {
