@@ -13,7 +13,7 @@ export class SesService {
 
   constructor(private readonly appConfigService: AppConfigService) {
     const source_arn = this.appConfigService.getSourceArn();
-    const email_from = 'noreply@dev.mvpworkshop.co';
+    const email_from = 'dev@jellylabs.org';
     const region = this.appConfigService.getAWSRegion();
 
     const isLocal = this.appConfigService.getEnvironment() === 'local';
