@@ -147,12 +147,15 @@ export class EthersService {
    * @param {string} poolAddress - The pool address where the token's total supply is stored.
    * @returns {Promise<number>} - A Promise resolving to the total supply of the token.
    */
-  async getTotalSupply(poolAddress: string): Promise<number> {
+  async getTotalSupply(
+    poolAddress: string,
+    blockNumber: number,
+  ): Promise<number> {
     return new Decimal(
       await this.provider.getStorageAt(
         poolAddress,
         TOTAL_SUPPLY,
-        ethers.utils.hexValue(await this.provider.getBlockNumber()),
+        ethers.utils.hexValue(blockNumber),
       ),
     ).toNumber();
   }

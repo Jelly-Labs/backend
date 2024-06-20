@@ -143,7 +143,6 @@ export class OfficialPoolService {
         shares,
         blockNumber,
         poolAddress: address,
-        officialPoolsLength: data.length.toString(),
         officialPoolWeight,
         totalWeight,
       });
@@ -166,19 +165,16 @@ export class OfficialPoolService {
     shares,
     blockNumber,
     poolAddress,
-    officialPoolsLength,
     officialPoolWeight,
     totalWeight,
   }: {
     shares: any[];
     blockNumber: number;
     poolAddress: string;
-    officialPoolsLength: string;
     officialPoolWeight: string;
     totalWeight: number;
   }): Promise<NestedObject> {
     const result = {};
-
     for (const share of shares) {
       const lpShare = await this.getLpShare({
         blockNumber,
@@ -191,8 +187,7 @@ export class OfficialPoolService {
       }
       const lpShareNormalizedByWeightsAndNumberOfPools = lpShare
         .mul(officialPoolWeight)
-        .div(totalWeight)
-        .div(officialPoolsLength);
+        .div(totalWeight);
 
       result[share.userAddress.id] = result[share.userAddress.id].add(
         lpShareNormalizedByWeightsAndNumberOfPools,
@@ -227,8 +222,10 @@ export class OfficialPoolService {
         blockNumber,
       }),
     ).toNumber();
-    const totalShares = await this.etherService.getTotalSupply(poolAddress);
-
+    const totalShares = await this.etherService.getTotalSupply(
+      poolAddress,
+      blockNumber,
+    );
     return this.getLpPercentInShare(lpBalance, totalShares);
   }
 
@@ -240,6 +237,6 @@ export class OfficialPoolService {
    * @returns {Decimal} - The calculated percentage as a Decimal value.
    */
   private getLpPercentInShare(lpBalance: number, totalShares: number): Decimal {
-    return new Decimal(lpBalance).div(totalShares).times(100);
+    return new Decimal(lpBalance).div(totalShares);
   }
 }
