@@ -31,7 +31,7 @@ export class CronjobsService {
     }
   }
 
-  @Cron('0 13 * * 2') // every Tuesday at 3:00 PM CET
+  // @Cron('0 13 * * 2') // every Tuesday at 3:00 PM CET
   async weeklyLPReward() {
     this.logger.debug('Running weekly LP reward cron');
     try {
@@ -43,7 +43,7 @@ export class CronjobsService {
     }
   }
 
-  @Cron('45 12 * * 2') // every Tuesday at 2:45 PM CET
+  // @Cron('45 12 * * 2') // every Tuesday at 2:45 PM CET
   async weeklyStakingReward() {
     this.logger.debug('Running weekly staking reward cron');
     try {
