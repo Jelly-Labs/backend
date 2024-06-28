@@ -25,6 +25,7 @@ export const GET_TOTAL_ALLOCATION_PER_EPOCH = graphql(`
   query GetTotalAlocationPerEpochQuery($where: TokenMint_filter!) {
     tokenMints(where: $where) {
       amount
+      timestamp
     }
   }
 `);

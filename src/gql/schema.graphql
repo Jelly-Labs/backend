@@ -11,6 +11,11 @@ directive @entity on OBJECT
 """Defined a Subgraph ID for an object type"""
 directive @subgraphId(id: String!) on OBJECT
 
+enum Aggregation_interval {
+  day
+  hour
+}
+
 type AmpUpdate {
   endAmp: BigInt!
   endTimestamp: BigInt!
@@ -132,7 +137,6 @@ enum AmpUpdate_orderBy {
   poolId__officialPoolWeight
   poolId__oracleEnabled
   poolId__owner
-  poolId__poolAllowed
   poolId__poolType
   poolId__poolTypeVersion
   poolId__principalToken
@@ -422,6 +426,7 @@ type Chest {
   nerfParameter: Int!
   tokenId: BigInt!
   transactionHash: Bytes!
+  unstaked: BigInt!
   user: Bytes!
   vestingDuration: BigInt!
 }
@@ -505,6 +510,14 @@ input Chest_filter {
   transactionHash_not: Bytes
   transactionHash_not_contains: Bytes
   transactionHash_not_in: [Bytes!]
+  unstaked: BigInt
+  unstaked_gt: BigInt
+  unstaked_gte: BigInt
+  unstaked_in: [BigInt!]
+  unstaked_lt: BigInt
+  unstaked_lte: BigInt
+  unstaked_not: BigInt
+  unstaked_not_in: [BigInt!]
   user: Bytes
   user_contains: Bytes
   user_gt: Bytes
@@ -535,6 +548,7 @@ enum Chest_orderBy {
   nerfParameter
   tokenId
   transactionHash
+  unstaked
   user
   vestingDuration
 }
@@ -664,7 +678,6 @@ enum CircuitBreaker_orderBy {
   pool__officialPoolWeight
   pool__oracleEnabled
   pool__owner
-  pool__poolAllowed
   pool__poolType
   pool__poolTypeVersion
   pool__principalToken
@@ -718,6 +731,230 @@ enum CircuitBreaker_orderBy {
   token__symbol
   token__weight
   upperBoundPercentage
+}
+
+type GovernanceProposal {
+  calldatas: [Bytes!]!
+  description: String!
+  executed: Boolean!
+  id: ID!
+  proposer: Bytes!
+  targets: [String!]!
+  values: [BigInt!]!
+  voteAbstain: BigInt!
+  voteAgainst: BigInt!
+  voteEnd: BigInt!
+  voteFor: BigInt!
+  voteStart: BigInt!
+}
+
+input GovernanceProposal_filter {
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [GovernanceProposal_filter]
+  calldatas: [Bytes!]
+  calldatas_contains: [Bytes!]
+  calldatas_contains_nocase: [Bytes!]
+  calldatas_not: [Bytes!]
+  calldatas_not_contains: [Bytes!]
+  calldatas_not_contains_nocase: [Bytes!]
+  description: String
+  description_contains: String
+  description_contains_nocase: String
+  description_ends_with: String
+  description_ends_with_nocase: String
+  description_gt: String
+  description_gte: String
+  description_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_not: String
+  description_not_contains: String
+  description_not_contains_nocase: String
+  description_not_ends_with: String
+  description_not_ends_with_nocase: String
+  description_not_in: [String!]
+  description_not_starts_with: String
+  description_not_starts_with_nocase: String
+  description_starts_with: String
+  description_starts_with_nocase: String
+  executed: Boolean
+  executed_in: [Boolean!]
+  executed_not: Boolean
+  executed_not_in: [Boolean!]
+  id: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_not: ID
+  id_not_in: [ID!]
+  or: [GovernanceProposal_filter]
+  proposer: Bytes
+  proposer_contains: Bytes
+  proposer_gt: Bytes
+  proposer_gte: Bytes
+  proposer_in: [Bytes!]
+  proposer_lt: Bytes
+  proposer_lte: Bytes
+  proposer_not: Bytes
+  proposer_not_contains: Bytes
+  proposer_not_in: [Bytes!]
+  targets: [String!]
+  targets_contains: [String!]
+  targets_contains_nocase: [String!]
+  targets_not: [String!]
+  targets_not_contains: [String!]
+  targets_not_contains_nocase: [String!]
+  values: [BigInt!]
+  values_contains: [BigInt!]
+  values_contains_nocase: [BigInt!]
+  values_not: [BigInt!]
+  values_not_contains: [BigInt!]
+  values_not_contains_nocase: [BigInt!]
+  voteAbstain: BigInt
+  voteAbstain_gt: BigInt
+  voteAbstain_gte: BigInt
+  voteAbstain_in: [BigInt!]
+  voteAbstain_lt: BigInt
+  voteAbstain_lte: BigInt
+  voteAbstain_not: BigInt
+  voteAbstain_not_in: [BigInt!]
+  voteAgainst: BigInt
+  voteAgainst_gt: BigInt
+  voteAgainst_gte: BigInt
+  voteAgainst_in: [BigInt!]
+  voteAgainst_lt: BigInt
+  voteAgainst_lte: BigInt
+  voteAgainst_not: BigInt
+  voteAgainst_not_in: [BigInt!]
+  voteEnd: BigInt
+  voteEnd_gt: BigInt
+  voteEnd_gte: BigInt
+  voteEnd_in: [BigInt!]
+  voteEnd_lt: BigInt
+  voteEnd_lte: BigInt
+  voteEnd_not: BigInt
+  voteEnd_not_in: [BigInt!]
+  voteFor: BigInt
+  voteFor_gt: BigInt
+  voteFor_gte: BigInt
+  voteFor_in: [BigInt!]
+  voteFor_lt: BigInt
+  voteFor_lte: BigInt
+  voteFor_not: BigInt
+  voteFor_not_in: [BigInt!]
+  voteStart: BigInt
+  voteStart_gt: BigInt
+  voteStart_gte: BigInt
+  voteStart_in: [BigInt!]
+  voteStart_lt: BigInt
+  voteStart_lte: BigInt
+  voteStart_not: BigInt
+  voteStart_not_in: [BigInt!]
+}
+
+enum GovernanceProposal_orderBy {
+  calldatas
+  description
+  executed
+  id
+  proposer
+  targets
+  values
+  voteAbstain
+  voteAgainst
+  voteEnd
+  voteFor
+  voteStart
+}
+
+type GovernanceVote {
+  id: ID!
+  proposal: GovernanceProposal!
+  support: BigInt!
+  voter: Bytes!
+  weight: BigInt!
+}
+
+input GovernanceVote_filter {
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [GovernanceVote_filter]
+  id: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_not: ID
+  id_not_in: [ID!]
+  or: [GovernanceVote_filter]
+  proposal: String
+  proposal_: GovernanceProposal_filter
+  proposal_contains: String
+  proposal_contains_nocase: String
+  proposal_ends_with: String
+  proposal_ends_with_nocase: String
+  proposal_gt: String
+  proposal_gte: String
+  proposal_in: [String!]
+  proposal_lt: String
+  proposal_lte: String
+  proposal_not: String
+  proposal_not_contains: String
+  proposal_not_contains_nocase: String
+  proposal_not_ends_with: String
+  proposal_not_ends_with_nocase: String
+  proposal_not_in: [String!]
+  proposal_not_starts_with: String
+  proposal_not_starts_with_nocase: String
+  proposal_starts_with: String
+  proposal_starts_with_nocase: String
+  support: BigInt
+  support_gt: BigInt
+  support_gte: BigInt
+  support_in: [BigInt!]
+  support_lt: BigInt
+  support_lte: BigInt
+  support_not: BigInt
+  support_not_in: [BigInt!]
+  voter: Bytes
+  voter_contains: Bytes
+  voter_gt: Bytes
+  voter_gte: Bytes
+  voter_in: [Bytes!]
+  voter_lt: Bytes
+  voter_lte: Bytes
+  voter_not: Bytes
+  voter_not_contains: Bytes
+  voter_not_in: [Bytes!]
+  weight: BigInt
+  weight_gt: BigInt
+  weight_gte: BigInt
+  weight_in: [BigInt!]
+  weight_lt: BigInt
+  weight_lte: BigInt
+  weight_not: BigInt
+  weight_not_in: [BigInt!]
+}
+
+enum GovernanceVote_orderBy {
+  id
+  proposal
+  proposal__description
+  proposal__executed
+  proposal__id
+  proposal__proposer
+  proposal__voteAbstain
+  proposal__voteAgainst
+  proposal__voteEnd
+  proposal__voteFor
+  proposal__voteStart
+  support
+  voter
+  weight
 }
 
 type GradualWeightUpdate {
@@ -837,7 +1074,6 @@ enum GradualWeightUpdate_orderBy {
   poolId__officialPoolWeight
   poolId__oracleEnabled
   poolId__owner
-  poolId__poolAllowed
   poolId__poolType
   poolId__poolTypeVersion
   poolId__principalToken
@@ -1036,7 +1272,6 @@ enum JoinExit_orderBy {
   pool__officialPoolWeight
   pool__oracleEnabled
   pool__owner
-  pool__poolAllowed
   pool__poolType
   pool__poolTypeVersion
   pool__principalToken
@@ -1082,12 +1317,48 @@ enum JoinExit_orderBy {
   valueUSD
 }
 
+type LPMerkleTree {
+  id: ID!
+  merkleTree: Bytes!
+}
+
+input LPMerkleTree_filter {
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [LPMerkleTree_filter]
+  id: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_not: ID
+  id_not_in: [ID!]
+  merkleTree: Bytes
+  merkleTree_contains: Bytes
+  merkleTree_gt: Bytes
+  merkleTree_gte: Bytes
+  merkleTree_in: [Bytes!]
+  merkleTree_lt: Bytes
+  merkleTree_lte: Bytes
+  merkleTree_not: Bytes
+  merkleTree_not_contains: Bytes
+  merkleTree_not_in: [Bytes!]
+  or: [LPMerkleTree_filter]
+}
+
+enum LPMerkleTree_orderBy {
+  id
+  merkleTree
+}
+
 type LPRewardDistributionSnapshot {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   id: ID!
   ipfsCid: String!
   ipfsData: UserLPRewardDistributionMetaData
+  ipfsMerkleTree: LPMerkleTree
 }
 
 input LPRewardDistributionSnapshot_filter {
@@ -1159,6 +1430,27 @@ input LPRewardDistributionSnapshot_filter {
   ipfsData_not_starts_with_nocase: String
   ipfsData_starts_with: String
   ipfsData_starts_with_nocase: String
+  ipfsMerkleTree: String
+  ipfsMerkleTree_: LPMerkleTree_filter
+  ipfsMerkleTree_contains: String
+  ipfsMerkleTree_contains_nocase: String
+  ipfsMerkleTree_ends_with: String
+  ipfsMerkleTree_ends_with_nocase: String
+  ipfsMerkleTree_gt: String
+  ipfsMerkleTree_gte: String
+  ipfsMerkleTree_in: [String!]
+  ipfsMerkleTree_lt: String
+  ipfsMerkleTree_lte: String
+  ipfsMerkleTree_not: String
+  ipfsMerkleTree_not_contains: String
+  ipfsMerkleTree_not_contains_nocase: String
+  ipfsMerkleTree_not_ends_with: String
+  ipfsMerkleTree_not_ends_with_nocase: String
+  ipfsMerkleTree_not_in: [String!]
+  ipfsMerkleTree_not_starts_with: String
+  ipfsMerkleTree_not_starts_with_nocase: String
+  ipfsMerkleTree_starts_with: String
+  ipfsMerkleTree_starts_with_nocase: String
   or: [LPRewardDistributionSnapshot_filter]
 }
 
@@ -1169,9 +1461,13 @@ enum LPRewardDistributionSnapshot_orderBy {
   ipfsCid
   ipfsData
   ipfsData__address
+  ipfsData__epoch
   ipfsData__id
   ipfsData__ipfsCid
   ipfsData__value
+  ipfsMerkleTree
+  ipfsMerkleTree__id
+  ipfsMerkleTree__merkleTree
 }
 
 type LatestPrice {
@@ -1290,7 +1586,6 @@ enum LatestPrice_orderBy {
   poolId__officialPoolWeight
   poolId__oracleEnabled
   poolId__owner
-  poolId__poolAllowed
   poolId__poolType
   poolId__poolTypeVersion
   poolId__principalToken
@@ -1537,7 +1832,6 @@ type Pool {
   officialPoolWeight: BigInt
   oracleEnabled: Boolean!
   owner: Bytes
-  poolAllowed: Boolean
   poolType: String
   poolTypeVersion: Int
   priceRateProviders(first: Int = 100, orderBy: PriceRateProvider_orderBy, orderDirection: OrderDirection, skip: Int = 0, where: PriceRateProvider_filter): [PriceRateProvider!]
@@ -1659,7 +1953,6 @@ enum PoolContract_orderBy {
   pool__officialPoolWeight
   pool__oracleEnabled
   pool__owner
-  pool__poolAllowed
   pool__poolType
   pool__poolTypeVersion
   pool__principalToken
@@ -1820,7 +2113,6 @@ enum PoolHistoricalLiquidity_orderBy {
   poolId__officialPoolWeight
   poolId__oracleEnabled
   poolId__owner
-  poolId__poolAllowed
   poolId__poolType
   poolId__poolTypeVersion
   poolId__principalToken
@@ -1861,6 +2153,61 @@ enum PoolHistoricalLiquidity_orderBy {
   poolShareValue
   poolTotalShares
   pricingAsset
+}
+
+type PoolPartyBurner {
+  beneficiary: Bytes!
+  id: ID!
+  jellyAmount: BigInt!
+  seiAmount: BigInt!
+}
+
+input PoolPartyBurner_filter {
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [PoolPartyBurner_filter]
+  beneficiary: Bytes
+  beneficiary_contains: Bytes
+  beneficiary_gt: Bytes
+  beneficiary_gte: Bytes
+  beneficiary_in: [Bytes!]
+  beneficiary_lt: Bytes
+  beneficiary_lte: Bytes
+  beneficiary_not: Bytes
+  beneficiary_not_contains: Bytes
+  beneficiary_not_in: [Bytes!]
+  id: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_not: ID
+  id_not_in: [ID!]
+  jellyAmount: BigInt
+  jellyAmount_gt: BigInt
+  jellyAmount_gte: BigInt
+  jellyAmount_in: [BigInt!]
+  jellyAmount_lt: BigInt
+  jellyAmount_lte: BigInt
+  jellyAmount_not: BigInt
+  jellyAmount_not_in: [BigInt!]
+  or: [PoolPartyBurner_filter]
+  seiAmount: BigInt
+  seiAmount_gt: BigInt
+  seiAmount_gte: BigInt
+  seiAmount_in: [BigInt!]
+  seiAmount_lt: BigInt
+  seiAmount_lte: BigInt
+  seiAmount_not: BigInt
+  seiAmount_not_in: [BigInt!]
+}
+
+enum PoolPartyBurner_orderBy {
+  beneficiary
+  id
+  jellyAmount
+  seiAmount
 }
 
 type PoolShare {
@@ -1969,7 +2316,6 @@ enum PoolShare_orderBy {
   poolId__officialPoolWeight
   poolId__oracleEnabled
   poolId__owner
-  poolId__poolAllowed
   poolId__poolType
   poolId__poolTypeVersion
   poolId__principalToken
@@ -2166,7 +2512,6 @@ enum PoolSnapshot_orderBy {
   pool__officialPoolWeight
   pool__oracleEnabled
   pool__owner
-  pool__poolAllowed
   pool__poolType
   pool__poolTypeVersion
   pool__principalToken
@@ -2508,7 +2853,6 @@ enum PoolToken_orderBy {
   poolId__officialPoolWeight
   poolId__oracleEnabled
   poolId__owner
-  poolId__poolAllowed
   poolId__poolType
   poolId__poolTypeVersion
   poolId__principalToken
@@ -2808,10 +3152,6 @@ input Pool_filter {
   owner_not: Bytes
   owner_not_contains: Bytes
   owner_not_in: [Bytes!]
-  poolAllowed: Boolean
-  poolAllowed_in: [Boolean!]
-  poolAllowed_not: Boolean
-  poolAllowed_not_in: [Boolean!]
   poolType: String
   poolTypeVersion: Int
   poolTypeVersion_gt: Int
@@ -3213,7 +3553,6 @@ enum Pool_orderBy {
   officialPoolWeight
   oracleEnabled
   owner
-  poolAllowed
   poolType
   poolTypeVersion
   priceRateProviders
@@ -3418,7 +3757,6 @@ enum PriceRateProvider_orderBy {
   poolId__officialPoolWeight
   poolId__oracleEnabled
   poolId__owner
-  poolId__poolAllowed
   poolId__poolType
   poolId__poolTypeVersion
   poolId__principalToken
@@ -3662,6 +4000,62 @@ type Query {
     subgraphError: _SubgraphErrorPolicy_! = deny
     where: CircuitBreaker_filter
   ): [CircuitBreaker!]!
+  governanceProposal(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): GovernanceProposal
+  governanceProposals(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: GovernanceProposal_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: GovernanceProposal_filter
+  ): [GovernanceProposal!]!
+  governanceVote(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): GovernanceVote
+  governanceVotes(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: GovernanceVote_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: GovernanceVote_filter
+  ): [GovernanceVote!]!
   gradualWeightUpdate(
     """
     The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
@@ -3746,6 +4140,34 @@ type Query {
     subgraphError: _SubgraphErrorPolicy_! = deny
     where: LatestPrice_filter
   ): [LatestPrice!]!
+  lpmerkleTree(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): LPMerkleTree
+  lpmerkleTrees(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: LPMerkleTree_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: LPMerkleTree_filter
+  ): [LPMerkleTree!]!
   lprewardDistributionSnapshot(
     """
     The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
@@ -3898,6 +4320,34 @@ type Query {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): PoolHistoricalLiquidity
+  poolPartyBurner(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): PoolPartyBurner
+  poolPartyBurners(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: PoolPartyBurner_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: PoolPartyBurner_filter
+  ): [PoolPartyBurner!]!
   poolShare(
     """
     The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
@@ -4054,6 +4504,34 @@ type Query {
     subgraphError: _SubgraphErrorPolicy_! = deny
     where: ProtocolIdData_filter
   ): [ProtocolIdData!]!
+  stakingMerkleTree(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): StakingMerkleTree
+  stakingMerkleTrees(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: StakingMerkleTree_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: StakingMerkleTree_filter
+  ): [StakingMerkleTree!]!
   stakingRewardDistributionSnapshot(
     """
     The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
@@ -4530,6 +5008,153 @@ type Query {
     subgraphError: _SubgraphErrorPolicy_! = deny
     where: User_filter
   ): [User!]!
+  vestedLiquidities(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: VestedLiquidity_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: VestedLiquidity_filter
+  ): [VestedLiquidity!]!
+  vestedLiquidity(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): VestedLiquidity
+  vestedStaking(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): VestedStaking
+  vestedStakings(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: VestedStaking_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: VestedStaking_filter
+  ): [VestedStaking!]!
+  vestingLiquidityClaimed(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): VestingLiquidityClaimed
+  vestingLiquidityClaimeds(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: VestingLiquidityClaimed_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: VestingLiquidityClaimed_filter
+  ): [VestingLiquidityClaimed!]!
+  vestingStakingClaimed(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): VestingStakingClaimed
+  vestingStakingClaimeds(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: VestingStakingClaimed_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: VestingStakingClaimed_filter
+  ): [VestingStakingClaimed!]!
+}
+
+type StakingMerkleTree {
+  id: ID!
+  merkleTree: Bytes!
+}
+
+input StakingMerkleTree_filter {
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [StakingMerkleTree_filter]
+  id: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_not: ID
+  id_not_in: [ID!]
+  merkleTree: Bytes
+  merkleTree_contains: Bytes
+  merkleTree_gt: Bytes
+  merkleTree_gte: Bytes
+  merkleTree_in: [Bytes!]
+  merkleTree_lt: Bytes
+  merkleTree_lte: Bytes
+  merkleTree_not: Bytes
+  merkleTree_not_contains: Bytes
+  merkleTree_not_in: [Bytes!]
+  or: [StakingMerkleTree_filter]
+}
+
+enum StakingMerkleTree_orderBy {
+  id
+  merkleTree
 }
 
 type StakingRewardDistributionSnapshot {
@@ -4538,6 +5163,7 @@ type StakingRewardDistributionSnapshot {
   id: ID!
   ipfsCid: String!
   ipfsData: UserStakingRewardDistributionMetaData
+  ipfsMerkleTree: StakingMerkleTree
 }
 
 input StakingRewardDistributionSnapshot_filter {
@@ -4609,6 +5235,27 @@ input StakingRewardDistributionSnapshot_filter {
   ipfsData_not_starts_with_nocase: String
   ipfsData_starts_with: String
   ipfsData_starts_with_nocase: String
+  ipfsMerkleTree: String
+  ipfsMerkleTree_: StakingMerkleTree_filter
+  ipfsMerkleTree_contains: String
+  ipfsMerkleTree_contains_nocase: String
+  ipfsMerkleTree_ends_with: String
+  ipfsMerkleTree_ends_with_nocase: String
+  ipfsMerkleTree_gt: String
+  ipfsMerkleTree_gte: String
+  ipfsMerkleTree_in: [String!]
+  ipfsMerkleTree_lt: String
+  ipfsMerkleTree_lte: String
+  ipfsMerkleTree_not: String
+  ipfsMerkleTree_not_contains: String
+  ipfsMerkleTree_not_contains_nocase: String
+  ipfsMerkleTree_not_ends_with: String
+  ipfsMerkleTree_not_ends_with_nocase: String
+  ipfsMerkleTree_not_in: [String!]
+  ipfsMerkleTree_not_starts_with: String
+  ipfsMerkleTree_not_starts_with_nocase: String
+  ipfsMerkleTree_starts_with: String
+  ipfsMerkleTree_starts_with_nocase: String
   or: [StakingRewardDistributionSnapshot_filter]
 }
 
@@ -4619,9 +5266,13 @@ enum StakingRewardDistributionSnapshot_orderBy {
   ipfsCid
   ipfsData
   ipfsData__address
+  ipfsData__epoch
   ipfsData__id
   ipfsData__ipfsCid
   ipfsData__value
+  ipfsMerkleTree
+  ipfsMerkleTree__id
+  ipfsMerkleTree__merkleTree
 }
 
 type Subscription {
@@ -4767,6 +5418,62 @@ type Subscription {
     subgraphError: _SubgraphErrorPolicy_! = deny
     where: CircuitBreaker_filter
   ): [CircuitBreaker!]!
+  governanceProposal(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): GovernanceProposal
+  governanceProposals(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: GovernanceProposal_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: GovernanceProposal_filter
+  ): [GovernanceProposal!]!
+  governanceVote(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): GovernanceVote
+  governanceVotes(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: GovernanceVote_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: GovernanceVote_filter
+  ): [GovernanceVote!]!
   gradualWeightUpdate(
     """
     The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
@@ -4851,6 +5558,34 @@ type Subscription {
     subgraphError: _SubgraphErrorPolicy_! = deny
     where: LatestPrice_filter
   ): [LatestPrice!]!
+  lpmerkleTree(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): LPMerkleTree
+  lpmerkleTrees(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: LPMerkleTree_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: LPMerkleTree_filter
+  ): [LPMerkleTree!]!
   lprewardDistributionSnapshot(
     """
     The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
@@ -5003,6 +5738,34 @@ type Subscription {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): PoolHistoricalLiquidity
+  poolPartyBurner(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): PoolPartyBurner
+  poolPartyBurners(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: PoolPartyBurner_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: PoolPartyBurner_filter
+  ): [PoolPartyBurner!]!
   poolShare(
     """
     The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
@@ -5159,6 +5922,34 @@ type Subscription {
     subgraphError: _SubgraphErrorPolicy_! = deny
     where: ProtocolIdData_filter
   ): [ProtocolIdData!]!
+  stakingMerkleTree(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): StakingMerkleTree
+  stakingMerkleTrees(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: StakingMerkleTree_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: StakingMerkleTree_filter
+  ): [StakingMerkleTree!]!
   stakingRewardDistributionSnapshot(
     """
     The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
@@ -5635,6 +6426,118 @@ type Subscription {
     subgraphError: _SubgraphErrorPolicy_! = deny
     where: User_filter
   ): [User!]!
+  vestedLiquidities(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: VestedLiquidity_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: VestedLiquidity_filter
+  ): [VestedLiquidity!]!
+  vestedLiquidity(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): VestedLiquidity
+  vestedStaking(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): VestedStaking
+  vestedStakings(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: VestedStaking_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: VestedStaking_filter
+  ): [VestedStaking!]!
+  vestingLiquidityClaimed(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): VestingLiquidityClaimed
+  vestingLiquidityClaimeds(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: VestingLiquidityClaimed_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: VestingLiquidityClaimed_filter
+  ): [VestingLiquidityClaimed!]!
+  vestingStakingClaimed(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    id: ID!
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): VestingStakingClaimed
+  vestingStakingClaimeds(
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    first: Int = 100
+    orderBy: VestingStakingClaimed_orderBy
+    orderDirection: OrderDirection
+    skip: Int = 0
+
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+    where: VestingStakingClaimed_filter
+  ): [VestingStakingClaimed!]!
 }
 
 type Swap {
@@ -5774,7 +6677,6 @@ enum SwapFeeUpdate_orderBy {
   pool__officialPoolWeight
   pool__oracleEnabled
   pool__owner
-  pool__poolAllowed
   pool__poolType
   pool__poolTypeVersion
   pool__principalToken
@@ -6019,7 +6921,6 @@ enum Swap_orderBy {
   poolId__officialPoolWeight
   poolId__oracleEnabled
   poolId__owner
-  poolId__poolAllowed
   poolId__poolType
   poolId__poolTypeVersion
   poolId__principalToken
@@ -6068,6 +6969,9 @@ enum Swap_orderBy {
   userAddress__id
   valueUSD
 }
+
+"A string representation of microseconds UNIX timestamp (16 digits)\n"
+scalar Timestamp
 
 type Token {
   address: String!
@@ -6191,6 +7095,7 @@ enum TokenClaimed_orderBy {
 
 type TokenDeposited {
   amount: BigInt!
+  blockTimestamp: BigInt!
   epochId: BigInt!
   id: ID!
   token: Bytes!
@@ -6208,6 +7113,14 @@ input TokenDeposited_filter {
   amount_not: BigInt
   amount_not_in: [BigInt!]
   and: [TokenDeposited_filter]
+  blockTimestamp: BigInt
+  blockTimestamp_gt: BigInt
+  blockTimestamp_gte: BigInt
+  blockTimestamp_in: [BigInt!]
+  blockTimestamp_lt: BigInt
+  blockTimestamp_lte: BigInt
+  blockTimestamp_not: BigInt
+  blockTimestamp_not_in: [BigInt!]
   epochId: BigInt
   epochId_gt: BigInt
   epochId_gte: BigInt
@@ -6239,6 +7152,7 @@ input TokenDeposited_filter {
 
 enum TokenDeposited_orderBy {
   amount
+  blockTimestamp
   epochId
   id
   token
@@ -6483,7 +7397,6 @@ enum TokenPrice_orderBy {
   poolId__officialPoolWeight
   poolId__oracleEnabled
   poolId__owner
-  poolId__poolAllowed
   poolId__poolType
   poolId__poolTypeVersion
   poolId__principalToken
@@ -6888,7 +7801,6 @@ enum Token_orderBy {
   pool__officialPoolWeight
   pool__oracleEnabled
   pool__owner
-  pool__poolAllowed
   pool__poolType
   pool__poolTypeVersion
   pool__principalToken
@@ -7320,6 +8232,7 @@ enum UserInternalBalance_orderBy {
 
 type UserLPRewardDistributionMetaData {
   address: Bytes!
+  epoch: BigInt!
   id: ID!
   ipfsCid: String!
   value: BigInt!
@@ -7339,6 +8252,14 @@ input UserLPRewardDistributionMetaData_filter {
   address_not_contains: Bytes
   address_not_in: [Bytes!]
   and: [UserLPRewardDistributionMetaData_filter]
+  epoch: BigInt
+  epoch_gt: BigInt
+  epoch_gte: BigInt
+  epoch_in: [BigInt!]
+  epoch_lt: BigInt
+  epoch_lte: BigInt
+  epoch_not: BigInt
+  epoch_not_in: [BigInt!]
   id: ID
   id_gt: ID
   id_gte: ID
@@ -7380,6 +8301,7 @@ input UserLPRewardDistributionMetaData_filter {
 
 enum UserLPRewardDistributionMetaData_orderBy {
   address
+  epoch
   id
   ipfsCid
   value
@@ -7387,6 +8309,7 @@ enum UserLPRewardDistributionMetaData_orderBy {
 
 type UserStakingRewardDistributionMetaData {
   address: Bytes!
+  epoch: BigInt!
   id: ID!
   ipfsCid: String!
   value: BigInt!
@@ -7406,6 +8329,14 @@ input UserStakingRewardDistributionMetaData_filter {
   address_not_contains: Bytes
   address_not_in: [Bytes!]
   and: [UserStakingRewardDistributionMetaData_filter]
+  epoch: BigInt
+  epoch_gt: BigInt
+  epoch_gte: BigInt
+  epoch_in: [BigInt!]
+  epoch_lt: BigInt
+  epoch_lte: BigInt
+  epoch_not: BigInt
+  epoch_not_in: [BigInt!]
   id: ID
   id_gt: ID
   id_gte: ID
@@ -7447,6 +8378,7 @@ input UserStakingRewardDistributionMetaData_filter {
 
 enum UserStakingRewardDistributionMetaData_orderBy {
   address
+  epoch
   id
   ipfsCid
   value
@@ -7477,12 +8409,235 @@ enum User_orderBy {
   userInternalBalances
 }
 
+type VestedLiquidity {
+  amount: BigInt!
+  beneficiary: Bytes!
+  id: ID!
+  timestamp: BigInt!
+}
+
+input VestedLiquidity_filter {
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  amount: BigInt
+  amount_gt: BigInt
+  amount_gte: BigInt
+  amount_in: [BigInt!]
+  amount_lt: BigInt
+  amount_lte: BigInt
+  amount_not: BigInt
+  amount_not_in: [BigInt!]
+  and: [VestedLiquidity_filter]
+  beneficiary: Bytes
+  beneficiary_contains: Bytes
+  beneficiary_gt: Bytes
+  beneficiary_gte: Bytes
+  beneficiary_in: [Bytes!]
+  beneficiary_lt: Bytes
+  beneficiary_lte: Bytes
+  beneficiary_not: Bytes
+  beneficiary_not_contains: Bytes
+  beneficiary_not_in: [Bytes!]
+  id: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_not: ID
+  id_not_in: [ID!]
+  or: [VestedLiquidity_filter]
+  timestamp: BigInt
+  timestamp_gt: BigInt
+  timestamp_gte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_lt: BigInt
+  timestamp_lte: BigInt
+  timestamp_not: BigInt
+  timestamp_not_in: [BigInt!]
+}
+
+enum VestedLiquidity_orderBy {
+  amount
+  beneficiary
+  id
+  timestamp
+}
+
+type VestedStaking {
+  amount: BigInt!
+  beneficiary: Bytes!
+  id: ID!
+  timestamp: BigInt!
+}
+
+input VestedStaking_filter {
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  amount: BigInt
+  amount_gt: BigInt
+  amount_gte: BigInt
+  amount_in: [BigInt!]
+  amount_lt: BigInt
+  amount_lte: BigInt
+  amount_not: BigInt
+  amount_not_in: [BigInt!]
+  and: [VestedStaking_filter]
+  beneficiary: Bytes
+  beneficiary_contains: Bytes
+  beneficiary_gt: Bytes
+  beneficiary_gte: Bytes
+  beneficiary_in: [Bytes!]
+  beneficiary_lt: Bytes
+  beneficiary_lte: Bytes
+  beneficiary_not: Bytes
+  beneficiary_not_contains: Bytes
+  beneficiary_not_in: [Bytes!]
+  id: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_not: ID
+  id_not_in: [ID!]
+  or: [VestedStaking_filter]
+  timestamp: BigInt
+  timestamp_gt: BigInt
+  timestamp_gte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_lt: BigInt
+  timestamp_lte: BigInt
+  timestamp_not: BigInt
+  timestamp_not_in: [BigInt!]
+}
+
+enum VestedStaking_orderBy {
+  amount
+  beneficiary
+  id
+  timestamp
+}
+
+type VestingLiquidityClaimed {
+  amount: BigInt!
+  beneficiary: Bytes!
+  id: ID!
+  timestamp: BigInt!
+}
+
+input VestingLiquidityClaimed_filter {
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  amount: BigInt
+  amount_gt: BigInt
+  amount_gte: BigInt
+  amount_in: [BigInt!]
+  amount_lt: BigInt
+  amount_lte: BigInt
+  amount_not: BigInt
+  amount_not_in: [BigInt!]
+  and: [VestingLiquidityClaimed_filter]
+  beneficiary: Bytes
+  beneficiary_contains: Bytes
+  beneficiary_gt: Bytes
+  beneficiary_gte: Bytes
+  beneficiary_in: [Bytes!]
+  beneficiary_lt: Bytes
+  beneficiary_lte: Bytes
+  beneficiary_not: Bytes
+  beneficiary_not_contains: Bytes
+  beneficiary_not_in: [Bytes!]
+  id: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_not: ID
+  id_not_in: [ID!]
+  or: [VestingLiquidityClaimed_filter]
+  timestamp: BigInt
+  timestamp_gt: BigInt
+  timestamp_gte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_lt: BigInt
+  timestamp_lte: BigInt
+  timestamp_not: BigInt
+  timestamp_not_in: [BigInt!]
+}
+
+enum VestingLiquidityClaimed_orderBy {
+  amount
+  beneficiary
+  id
+  timestamp
+}
+
+type VestingStakingClaimed {
+  amount: BigInt!
+  beneficiary: Bytes!
+  id: ID!
+  timestamp: BigInt!
+}
+
+input VestingStakingClaimed_filter {
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  amount: BigInt
+  amount_gt: BigInt
+  amount_gte: BigInt
+  amount_in: [BigInt!]
+  amount_lt: BigInt
+  amount_lte: BigInt
+  amount_not: BigInt
+  amount_not_in: [BigInt!]
+  and: [VestingStakingClaimed_filter]
+  beneficiary: Bytes
+  beneficiary_contains: Bytes
+  beneficiary_gt: Bytes
+  beneficiary_gte: Bytes
+  beneficiary_in: [Bytes!]
+  beneficiary_lt: Bytes
+  beneficiary_lte: Bytes
+  beneficiary_not: Bytes
+  beneficiary_not_contains: Bytes
+  beneficiary_not_in: [Bytes!]
+  id: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_not: ID
+  id_not_in: [ID!]
+  or: [VestingStakingClaimed_filter]
+  timestamp: BigInt
+  timestamp_gt: BigInt
+  timestamp_gte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_lt: BigInt
+  timestamp_lte: BigInt
+  timestamp_not: BigInt
+  timestamp_not_in: [BigInt!]
+}
+
+enum VestingStakingClaimed_orderBy {
+  amount
+  beneficiary
+  id
+  timestamp
+}
+
 type _Block_ {
   """The hash of the block"""
   hash: Bytes
 
   """The block number"""
   number: Int!
+
+  """The hash of the parent block"""
+  parentHash: Bytes
 
   """Integer representation of the timestamp stored in blocks for the chain"""
   timestamp: Int

@@ -22,7 +22,17 @@ export type Scalars = {
    *
    */
   Int8: { input: any; output: any; }
+  /**
+   * A string representation of microseconds UNIX timestamp (16 digits)
+   *
+   */
+  Timestamp: { input: any; output: any; }
 };
+
+export enum Aggregation_Interval {
+  Day = 'day',
+  Hour = 'hour'
+}
 
 export type AmpUpdate = {
   __typename?: 'AmpUpdate';
@@ -146,7 +156,6 @@ export enum AmpUpdate_OrderBy {
   PoolIdOfficialPoolWeight = 'poolId__officialPoolWeight',
   PoolIdOracleEnabled = 'poolId__oracleEnabled',
   PoolIdOwner = 'poolId__owner',
-  PoolIdPoolAllowed = 'poolId__poolAllowed',
   PoolIdPoolType = 'poolId__poolType',
   PoolIdPoolTypeVersion = 'poolId__poolTypeVersion',
   PoolIdPrincipalToken = 'poolId__principalToken',
@@ -442,6 +451,7 @@ export type Chest = {
   nerfParameter: Scalars['Int']['output'];
   tokenId: Scalars['BigInt']['output'];
   transactionHash: Scalars['Bytes']['output'];
+  unstaked: Scalars['BigInt']['output'];
   user: Scalars['Bytes']['output'];
   vestingDuration: Scalars['BigInt']['output'];
 };
@@ -525,6 +535,14 @@ export type Chest_Filter = {
   transactionHash_not?: InputMaybe<Scalars['Bytes']['input']>;
   transactionHash_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
   transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  unstaked?: InputMaybe<Scalars['BigInt']['input']>;
+  unstaked_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  unstaked_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  unstaked_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  unstaked_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  unstaked_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  unstaked_not?: InputMaybe<Scalars['BigInt']['input']>;
+  unstaked_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   user?: InputMaybe<Scalars['Bytes']['input']>;
   user_contains?: InputMaybe<Scalars['Bytes']['input']>;
   user_gt?: InputMaybe<Scalars['Bytes']['input']>;
@@ -555,6 +573,7 @@ export enum Chest_OrderBy {
   NerfParameter = 'nerfParameter',
   TokenId = 'tokenId',
   TransactionHash = 'transactionHash',
+  Unstaked = 'unstaked',
   User = 'user',
   VestingDuration = 'vestingDuration'
 }
@@ -685,7 +704,6 @@ export enum CircuitBreaker_OrderBy {
   PoolOfficialPoolWeight = 'pool__officialPoolWeight',
   PoolOracleEnabled = 'pool__oracleEnabled',
   PoolOwner = 'pool__owner',
-  PoolPoolAllowed = 'pool__poolAllowed',
   PoolPoolType = 'pool__poolType',
   PoolPoolTypeVersion = 'pool__poolTypeVersion',
   PoolPrincipalToken = 'pool__principalToken',
@@ -739,6 +757,232 @@ export enum CircuitBreaker_OrderBy {
   TokenSymbol = 'token__symbol',
   TokenWeight = 'token__weight',
   UpperBoundPercentage = 'upperBoundPercentage'
+}
+
+export type GovernanceProposal = {
+  __typename?: 'GovernanceProposal';
+  calldatas: Array<Scalars['Bytes']['output']>;
+  description: Scalars['String']['output'];
+  executed: Scalars['Boolean']['output'];
+  id: Scalars['ID']['output'];
+  proposer: Scalars['Bytes']['output'];
+  targets: Array<Scalars['String']['output']>;
+  values: Array<Scalars['BigInt']['output']>;
+  voteAbstain: Scalars['BigInt']['output'];
+  voteAgainst: Scalars['BigInt']['output'];
+  voteEnd: Scalars['BigInt']['output'];
+  voteFor: Scalars['BigInt']['output'];
+  voteStart: Scalars['BigInt']['output'];
+};
+
+export type GovernanceProposal_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<GovernanceProposal_Filter>>>;
+  calldatas?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  calldatas_contains?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  calldatas_contains_nocase?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  calldatas_not?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  calldatas_not_contains?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  calldatas_not_contains_nocase?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  description_contains?: InputMaybe<Scalars['String']['input']>;
+  description_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  description_ends_with?: InputMaybe<Scalars['String']['input']>;
+  description_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  description_gt?: InputMaybe<Scalars['String']['input']>;
+  description_gte?: InputMaybe<Scalars['String']['input']>;
+  description_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  description_lt?: InputMaybe<Scalars['String']['input']>;
+  description_lte?: InputMaybe<Scalars['String']['input']>;
+  description_not?: InputMaybe<Scalars['String']['input']>;
+  description_not_contains?: InputMaybe<Scalars['String']['input']>;
+  description_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  description_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  description_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  description_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  description_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  description_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  description_starts_with?: InputMaybe<Scalars['String']['input']>;
+  description_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  executed?: InputMaybe<Scalars['Boolean']['input']>;
+  executed_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  executed_not?: InputMaybe<Scalars['Boolean']['input']>;
+  executed_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  or?: InputMaybe<Array<InputMaybe<GovernanceProposal_Filter>>>;
+  proposer?: InputMaybe<Scalars['Bytes']['input']>;
+  proposer_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  proposer_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  proposer_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  proposer_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  proposer_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  proposer_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  proposer_not?: InputMaybe<Scalars['Bytes']['input']>;
+  proposer_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  proposer_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  targets?: InputMaybe<Array<Scalars['String']['input']>>;
+  targets_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  targets_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  targets_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  targets_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  targets_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  values?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  values_contains?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  values_contains_nocase?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  values_not?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  values_not_contains?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  values_not_contains_nocase?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  voteAbstain?: InputMaybe<Scalars['BigInt']['input']>;
+  voteAbstain_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  voteAbstain_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  voteAbstain_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  voteAbstain_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  voteAbstain_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  voteAbstain_not?: InputMaybe<Scalars['BigInt']['input']>;
+  voteAbstain_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  voteAgainst?: InputMaybe<Scalars['BigInt']['input']>;
+  voteAgainst_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  voteAgainst_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  voteAgainst_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  voteAgainst_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  voteAgainst_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  voteAgainst_not?: InputMaybe<Scalars['BigInt']['input']>;
+  voteAgainst_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  voteEnd?: InputMaybe<Scalars['BigInt']['input']>;
+  voteEnd_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  voteEnd_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  voteEnd_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  voteEnd_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  voteEnd_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  voteEnd_not?: InputMaybe<Scalars['BigInt']['input']>;
+  voteEnd_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  voteFor?: InputMaybe<Scalars['BigInt']['input']>;
+  voteFor_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  voteFor_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  voteFor_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  voteFor_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  voteFor_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  voteFor_not?: InputMaybe<Scalars['BigInt']['input']>;
+  voteFor_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  voteStart?: InputMaybe<Scalars['BigInt']['input']>;
+  voteStart_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  voteStart_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  voteStart_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  voteStart_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  voteStart_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  voteStart_not?: InputMaybe<Scalars['BigInt']['input']>;
+  voteStart_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+};
+
+export enum GovernanceProposal_OrderBy {
+  Calldatas = 'calldatas',
+  Description = 'description',
+  Executed = 'executed',
+  Id = 'id',
+  Proposer = 'proposer',
+  Targets = 'targets',
+  Values = 'values',
+  VoteAbstain = 'voteAbstain',
+  VoteAgainst = 'voteAgainst',
+  VoteEnd = 'voteEnd',
+  VoteFor = 'voteFor',
+  VoteStart = 'voteStart'
+}
+
+export type GovernanceVote = {
+  __typename?: 'GovernanceVote';
+  id: Scalars['ID']['output'];
+  proposal: GovernanceProposal;
+  support: Scalars['BigInt']['output'];
+  voter: Scalars['Bytes']['output'];
+  weight: Scalars['BigInt']['output'];
+};
+
+export type GovernanceVote_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<GovernanceVote_Filter>>>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  or?: InputMaybe<Array<InputMaybe<GovernanceVote_Filter>>>;
+  proposal?: InputMaybe<Scalars['String']['input']>;
+  proposal_?: InputMaybe<GovernanceProposal_Filter>;
+  proposal_contains?: InputMaybe<Scalars['String']['input']>;
+  proposal_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  proposal_ends_with?: InputMaybe<Scalars['String']['input']>;
+  proposal_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  proposal_gt?: InputMaybe<Scalars['String']['input']>;
+  proposal_gte?: InputMaybe<Scalars['String']['input']>;
+  proposal_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  proposal_lt?: InputMaybe<Scalars['String']['input']>;
+  proposal_lte?: InputMaybe<Scalars['String']['input']>;
+  proposal_not?: InputMaybe<Scalars['String']['input']>;
+  proposal_not_contains?: InputMaybe<Scalars['String']['input']>;
+  proposal_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  proposal_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  proposal_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  proposal_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  proposal_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  proposal_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  proposal_starts_with?: InputMaybe<Scalars['String']['input']>;
+  proposal_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  support?: InputMaybe<Scalars['BigInt']['input']>;
+  support_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  support_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  support_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  support_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  support_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  support_not?: InputMaybe<Scalars['BigInt']['input']>;
+  support_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  voter?: InputMaybe<Scalars['Bytes']['input']>;
+  voter_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  voter_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  voter_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  voter_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  voter_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  voter_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  voter_not?: InputMaybe<Scalars['Bytes']['input']>;
+  voter_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  voter_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  weight?: InputMaybe<Scalars['BigInt']['input']>;
+  weight_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  weight_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  weight_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  weight_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  weight_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  weight_not?: InputMaybe<Scalars['BigInt']['input']>;
+  weight_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+};
+
+export enum GovernanceVote_OrderBy {
+  Id = 'id',
+  Proposal = 'proposal',
+  ProposalDescription = 'proposal__description',
+  ProposalExecuted = 'proposal__executed',
+  ProposalId = 'proposal__id',
+  ProposalProposer = 'proposal__proposer',
+  ProposalVoteAbstain = 'proposal__voteAbstain',
+  ProposalVoteAgainst = 'proposal__voteAgainst',
+  ProposalVoteEnd = 'proposal__voteEnd',
+  ProposalVoteFor = 'proposal__voteFor',
+  ProposalVoteStart = 'proposal__voteStart',
+  Support = 'support',
+  Voter = 'voter',
+  Weight = 'weight'
 }
 
 export type GradualWeightUpdate = {
@@ -859,7 +1103,6 @@ export enum GradualWeightUpdate_OrderBy {
   PoolIdOfficialPoolWeight = 'poolId__officialPoolWeight',
   PoolIdOracleEnabled = 'poolId__oracleEnabled',
   PoolIdOwner = 'poolId__owner',
-  PoolIdPoolAllowed = 'poolId__poolAllowed',
   PoolIdPoolType = 'poolId__poolType',
   PoolIdPoolTypeVersion = 'poolId__poolTypeVersion',
   PoolIdPrincipalToken = 'poolId__principalToken',
@@ -1056,7 +1299,6 @@ export enum JoinExit_OrderBy {
   PoolOfficialPoolWeight = 'pool__officialPoolWeight',
   PoolOracleEnabled = 'pool__oracleEnabled',
   PoolOwner = 'pool__owner',
-  PoolPoolAllowed = 'pool__poolAllowed',
   PoolPoolType = 'pool__poolType',
   PoolPoolTypeVersion = 'pool__poolTypeVersion',
   PoolPrincipalToken = 'pool__principalToken',
@@ -1102,6 +1344,42 @@ export enum JoinExit_OrderBy {
   ValueUsd = 'valueUSD'
 }
 
+export type LpMerkleTree = {
+  __typename?: 'LPMerkleTree';
+  id: Scalars['ID']['output'];
+  merkleTree: Scalars['Bytes']['output'];
+};
+
+export type LpMerkleTree_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<LpMerkleTree_Filter>>>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  merkleTree?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  merkleTree_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_not?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  or?: InputMaybe<Array<InputMaybe<LpMerkleTree_Filter>>>;
+};
+
+export enum LpMerkleTree_OrderBy {
+  Id = 'id',
+  MerkleTree = 'merkleTree'
+}
+
 export type LpRewardDistributionSnapshot = {
   __typename?: 'LPRewardDistributionSnapshot';
   blockNumber: Scalars['BigInt']['output'];
@@ -1109,6 +1387,7 @@ export type LpRewardDistributionSnapshot = {
   id: Scalars['ID']['output'];
   ipfsCid: Scalars['String']['output'];
   ipfsData?: Maybe<UserLpRewardDistributionMetaData>;
+  ipfsMerkleTree?: Maybe<LpMerkleTree>;
 };
 
 export type LpRewardDistributionSnapshot_Filter = {
@@ -1180,6 +1459,27 @@ export type LpRewardDistributionSnapshot_Filter = {
   ipfsData_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   ipfsData_starts_with?: InputMaybe<Scalars['String']['input']>;
   ipfsData_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_?: InputMaybe<LpMerkleTree_Filter>;
+  ipfsMerkleTree_contains?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_gt?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_gte?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ipfsMerkleTree_lt?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_lte?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_contains?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ipfsMerkleTree_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   or?: InputMaybe<Array<InputMaybe<LpRewardDistributionSnapshot_Filter>>>;
 };
 
@@ -1190,9 +1490,13 @@ export enum LpRewardDistributionSnapshot_OrderBy {
   IpfsCid = 'ipfsCid',
   IpfsData = 'ipfsData',
   IpfsDataAddress = 'ipfsData__address',
+  IpfsDataEpoch = 'ipfsData__epoch',
   IpfsDataId = 'ipfsData__id',
   IpfsDataIpfsCid = 'ipfsData__ipfsCid',
-  IpfsDataValue = 'ipfsData__value'
+  IpfsDataValue = 'ipfsData__value',
+  IpfsMerkleTree = 'ipfsMerkleTree',
+  IpfsMerkleTreeId = 'ipfsMerkleTree__id',
+  IpfsMerkleTreeMerkleTree = 'ipfsMerkleTree__merkleTree'
 }
 
 export type LatestPrice = {
@@ -1312,7 +1616,6 @@ export enum LatestPrice_OrderBy {
   PoolIdOfficialPoolWeight = 'poolId__officialPoolWeight',
   PoolIdOracleEnabled = 'poolId__oracleEnabled',
   PoolIdOwner = 'poolId__owner',
-  PoolIdPoolAllowed = 'poolId__poolAllowed',
   PoolIdPoolType = 'poolId__poolType',
   PoolIdPoolTypeVersion = 'poolId__poolTypeVersion',
   PoolIdPrincipalToken = 'poolId__principalToken',
@@ -1571,7 +1874,6 @@ export type Pool = {
   officialPoolWeight?: Maybe<Scalars['BigInt']['output']>;
   oracleEnabled: Scalars['Boolean']['output'];
   owner?: Maybe<Scalars['Bytes']['output']>;
-  poolAllowed?: Maybe<Scalars['Boolean']['output']>;
   poolType?: Maybe<Scalars['String']['output']>;
   poolTypeVersion?: Maybe<Scalars['Int']['output']>;
   priceRateProviders?: Maybe<Array<PriceRateProvider>>;
@@ -1766,7 +2068,6 @@ export enum PoolContract_OrderBy {
   PoolOfficialPoolWeight = 'pool__officialPoolWeight',
   PoolOracleEnabled = 'pool__oracleEnabled',
   PoolOwner = 'pool__owner',
-  PoolPoolAllowed = 'pool__poolAllowed',
   PoolPoolType = 'pool__poolType',
   PoolPoolTypeVersion = 'pool__poolTypeVersion',
   PoolPrincipalToken = 'pool__principalToken',
@@ -1928,7 +2229,6 @@ export enum PoolHistoricalLiquidity_OrderBy {
   PoolIdOfficialPoolWeight = 'poolId__officialPoolWeight',
   PoolIdOracleEnabled = 'poolId__oracleEnabled',
   PoolIdOwner = 'poolId__owner',
-  PoolIdPoolAllowed = 'poolId__poolAllowed',
   PoolIdPoolType = 'poolId__poolType',
   PoolIdPoolTypeVersion = 'poolId__poolTypeVersion',
   PoolIdPrincipalToken = 'poolId__principalToken',
@@ -1969,6 +2269,62 @@ export enum PoolHistoricalLiquidity_OrderBy {
   PoolShareValue = 'poolShareValue',
   PoolTotalShares = 'poolTotalShares',
   PricingAsset = 'pricingAsset'
+}
+
+export type PoolPartyBurner = {
+  __typename?: 'PoolPartyBurner';
+  beneficiary: Scalars['Bytes']['output'];
+  id: Scalars['ID']['output'];
+  jellyAmount: Scalars['BigInt']['output'];
+  seiAmount: Scalars['BigInt']['output'];
+};
+
+export type PoolPartyBurner_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<PoolPartyBurner_Filter>>>;
+  beneficiary?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  beneficiary_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_not?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  jellyAmount?: InputMaybe<Scalars['BigInt']['input']>;
+  jellyAmount_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  jellyAmount_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  jellyAmount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  jellyAmount_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  jellyAmount_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  jellyAmount_not?: InputMaybe<Scalars['BigInt']['input']>;
+  jellyAmount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  or?: InputMaybe<Array<InputMaybe<PoolPartyBurner_Filter>>>;
+  seiAmount?: InputMaybe<Scalars['BigInt']['input']>;
+  seiAmount_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  seiAmount_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  seiAmount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  seiAmount_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  seiAmount_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  seiAmount_not?: InputMaybe<Scalars['BigInt']['input']>;
+  seiAmount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+};
+
+export enum PoolPartyBurner_OrderBy {
+  Beneficiary = 'beneficiary',
+  Id = 'id',
+  JellyAmount = 'jellyAmount',
+  SeiAmount = 'seiAmount'
 }
 
 export type PoolShare = {
@@ -2078,7 +2434,6 @@ export enum PoolShare_OrderBy {
   PoolIdOfficialPoolWeight = 'poolId__officialPoolWeight',
   PoolIdOracleEnabled = 'poolId__oracleEnabled',
   PoolIdOwner = 'poolId__owner',
-  PoolIdPoolAllowed = 'poolId__poolAllowed',
   PoolIdPoolType = 'poolId__poolType',
   PoolIdPoolTypeVersion = 'poolId__poolTypeVersion',
   PoolIdPrincipalToken = 'poolId__principalToken',
@@ -2276,7 +2631,6 @@ export enum PoolSnapshot_OrderBy {
   PoolOfficialPoolWeight = 'pool__officialPoolWeight',
   PoolOracleEnabled = 'pool__oracleEnabled',
   PoolOwner = 'pool__owner',
-  PoolPoolAllowed = 'pool__poolAllowed',
   PoolPoolType = 'pool__poolType',
   PoolPoolTypeVersion = 'pool__poolTypeVersion',
   PoolPrincipalToken = 'pool__principalToken',
@@ -2628,7 +2982,6 @@ export enum PoolToken_OrderBy {
   PoolIdOfficialPoolWeight = 'poolId__officialPoolWeight',
   PoolIdOracleEnabled = 'poolId__oracleEnabled',
   PoolIdOwner = 'poolId__owner',
-  PoolIdPoolAllowed = 'poolId__poolAllowed',
   PoolIdPoolType = 'poolId__poolType',
   PoolIdPoolTypeVersion = 'poolId__poolTypeVersion',
   PoolIdPrincipalToken = 'poolId__principalToken',
@@ -2928,10 +3281,6 @@ export type Pool_Filter = {
   owner_not?: InputMaybe<Scalars['Bytes']['input']>;
   owner_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
   owner_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
-  poolAllowed?: InputMaybe<Scalars['Boolean']['input']>;
-  poolAllowed_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
-  poolAllowed_not?: InputMaybe<Scalars['Boolean']['input']>;
-  poolAllowed_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
   poolType?: InputMaybe<Scalars['String']['input']>;
   poolTypeVersion?: InputMaybe<Scalars['Int']['input']>;
   poolTypeVersion_gt?: InputMaybe<Scalars['Int']['input']>;
@@ -3333,7 +3682,6 @@ export enum Pool_OrderBy {
   OfficialPoolWeight = 'officialPoolWeight',
   OracleEnabled = 'oracleEnabled',
   Owner = 'owner',
-  PoolAllowed = 'poolAllowed',
   PoolType = 'poolType',
   PoolTypeVersion = 'poolTypeVersion',
   PriceRateProviders = 'priceRateProviders',
@@ -3539,7 +3887,6 @@ export enum PriceRateProvider_OrderBy {
   PoolIdOfficialPoolWeight = 'poolId__officialPoolWeight',
   PoolIdOracleEnabled = 'poolId__oracleEnabled',
   PoolIdOwner = 'poolId__owner',
-  PoolIdPoolAllowed = 'poolId__poolAllowed',
   PoolIdPoolType = 'poolId__poolType',
   PoolIdPoolTypeVersion = 'poolId__poolTypeVersion',
   PoolIdPrincipalToken = 'poolId__principalToken',
@@ -3655,12 +4002,18 @@ export type Query = {
   chests: Array<Chest>;
   circuitBreaker?: Maybe<CircuitBreaker>;
   circuitBreakers: Array<CircuitBreaker>;
+  governanceProposal?: Maybe<GovernanceProposal>;
+  governanceProposals: Array<GovernanceProposal>;
+  governanceVote?: Maybe<GovernanceVote>;
+  governanceVotes: Array<GovernanceVote>;
   gradualWeightUpdate?: Maybe<GradualWeightUpdate>;
   gradualWeightUpdates: Array<GradualWeightUpdate>;
   joinExit?: Maybe<JoinExit>;
   joinExits: Array<JoinExit>;
   latestPrice?: Maybe<LatestPrice>;
   latestPrices: Array<LatestPrice>;
+  lpmerkleTree?: Maybe<LpMerkleTree>;
+  lpmerkleTrees: Array<LpMerkleTree>;
   lprewardDistributionSnapshot?: Maybe<LpRewardDistributionSnapshot>;
   lprewardDistributionSnapshots: Array<LpRewardDistributionSnapshot>;
   managementOperation?: Maybe<ManagementOperation>;
@@ -3672,6 +4025,8 @@ export type Query = {
   poolContracts: Array<PoolContract>;
   poolHistoricalLiquidities: Array<PoolHistoricalLiquidity>;
   poolHistoricalLiquidity?: Maybe<PoolHistoricalLiquidity>;
+  poolPartyBurner?: Maybe<PoolPartyBurner>;
+  poolPartyBurners: Array<PoolPartyBurner>;
   poolShare?: Maybe<PoolShare>;
   poolShares: Array<PoolShare>;
   poolSnapshot?: Maybe<PoolSnapshot>;
@@ -3683,6 +4038,8 @@ export type Query = {
   priceRateProviders: Array<PriceRateProvider>;
   protocolIdData?: Maybe<ProtocolIdData>;
   protocolIdDatas: Array<ProtocolIdData>;
+  stakingMerkleTree?: Maybe<StakingMerkleTree>;
+  stakingMerkleTrees: Array<StakingMerkleTree>;
   stakingRewardDistributionSnapshot?: Maybe<StakingRewardDistributionSnapshot>;
   stakingRewardDistributionSnapshots: Array<StakingRewardDistributionSnapshot>;
   swap?: Maybe<Swap>;
@@ -3717,6 +4074,14 @@ export type Query = {
   userStakingRewardDistributionMetaData?: Maybe<UserStakingRewardDistributionMetaData>;
   userStakingRewardDistributionMetaDatas: Array<UserStakingRewardDistributionMetaData>;
   users: Array<User>;
+  vestedLiquidities: Array<VestedLiquidity>;
+  vestedLiquidity?: Maybe<VestedLiquidity>;
+  vestedStaking?: Maybe<VestedStaking>;
+  vestedStakings: Array<VestedStaking>;
+  vestingLiquidityClaimed?: Maybe<VestingLiquidityClaimed>;
+  vestingLiquidityClaimeds: Array<VestingLiquidityClaimed>;
+  vestingStakingClaimed?: Maybe<VestingStakingClaimed>;
+  vestingStakingClaimeds: Array<VestingStakingClaimed>;
 };
 
 
@@ -3815,6 +4180,42 @@ export type QueryCircuitBreakersArgs = {
 };
 
 
+export type QueryGovernanceProposalArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryGovernanceProposalsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<GovernanceProposal_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<GovernanceProposal_Filter>;
+};
+
+
+export type QueryGovernanceVoteArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryGovernanceVotesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<GovernanceVote_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<GovernanceVote_Filter>;
+};
+
+
 export type QueryGradualWeightUpdateArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
@@ -3866,6 +4267,24 @@ export type QueryLatestPricesArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<LatestPrice_Filter>;
+};
+
+
+export type QueryLpmerkleTreeArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryLpmerkleTreesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<LpMerkleTree_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<LpMerkleTree_Filter>;
 };
 
 
@@ -3963,6 +4382,24 @@ export type QueryPoolHistoricalLiquidityArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryPoolPartyBurnerArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryPoolPartyBurnersArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<PoolPartyBurner_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<PoolPartyBurner_Filter>;
 };
 
 
@@ -4064,6 +4501,24 @@ export type QueryProtocolIdDatasArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<ProtocolIdData_Filter>;
+};
+
+
+export type QueryStakingMerkleTreeArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryStakingMerkleTreesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<StakingMerkleTree_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<StakingMerkleTree_Filter>;
 };
 
 
@@ -4372,6 +4827,114 @@ export type QueryUsersArgs = {
   where?: InputMaybe<User_Filter>;
 };
 
+
+export type QueryVestedLiquiditiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<VestedLiquidity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<VestedLiquidity_Filter>;
+};
+
+
+export type QueryVestedLiquidityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryVestedStakingArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryVestedStakingsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<VestedStaking_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<VestedStaking_Filter>;
+};
+
+
+export type QueryVestingLiquidityClaimedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryVestingLiquidityClaimedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<VestingLiquidityClaimed_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<VestingLiquidityClaimed_Filter>;
+};
+
+
+export type QueryVestingStakingClaimedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryVestingStakingClaimedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<VestingStakingClaimed_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<VestingStakingClaimed_Filter>;
+};
+
+export type StakingMerkleTree = {
+  __typename?: 'StakingMerkleTree';
+  id: Scalars['ID']['output'];
+  merkleTree: Scalars['Bytes']['output'];
+};
+
+export type StakingMerkleTree_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<StakingMerkleTree_Filter>>>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  merkleTree?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  merkleTree_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_not?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  or?: InputMaybe<Array<InputMaybe<StakingMerkleTree_Filter>>>;
+};
+
+export enum StakingMerkleTree_OrderBy {
+  Id = 'id',
+  MerkleTree = 'merkleTree'
+}
+
 export type StakingRewardDistributionSnapshot = {
   __typename?: 'StakingRewardDistributionSnapshot';
   blockNumber: Scalars['BigInt']['output'];
@@ -4379,6 +4942,7 @@ export type StakingRewardDistributionSnapshot = {
   id: Scalars['ID']['output'];
   ipfsCid: Scalars['String']['output'];
   ipfsData?: Maybe<UserStakingRewardDistributionMetaData>;
+  ipfsMerkleTree?: Maybe<StakingMerkleTree>;
 };
 
 export type StakingRewardDistributionSnapshot_Filter = {
@@ -4450,6 +5014,27 @@ export type StakingRewardDistributionSnapshot_Filter = {
   ipfsData_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   ipfsData_starts_with?: InputMaybe<Scalars['String']['input']>;
   ipfsData_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_?: InputMaybe<StakingMerkleTree_Filter>;
+  ipfsMerkleTree_contains?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_gt?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_gte?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ipfsMerkleTree_lt?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_lte?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_contains?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ipfsMerkleTree_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
   or?: InputMaybe<Array<InputMaybe<StakingRewardDistributionSnapshot_Filter>>>;
 };
 
@@ -4460,9 +5045,13 @@ export enum StakingRewardDistributionSnapshot_OrderBy {
   IpfsCid = 'ipfsCid',
   IpfsData = 'ipfsData',
   IpfsDataAddress = 'ipfsData__address',
+  IpfsDataEpoch = 'ipfsData__epoch',
   IpfsDataId = 'ipfsData__id',
   IpfsDataIpfsCid = 'ipfsData__ipfsCid',
-  IpfsDataValue = 'ipfsData__value'
+  IpfsDataValue = 'ipfsData__value',
+  IpfsMerkleTree = 'ipfsMerkleTree',
+  IpfsMerkleTreeId = 'ipfsMerkleTree__id',
+  IpfsMerkleTreeMerkleTree = 'ipfsMerkleTree__merkleTree'
 }
 
 export type Subscription = {
@@ -4479,12 +5068,18 @@ export type Subscription = {
   chests: Array<Chest>;
   circuitBreaker?: Maybe<CircuitBreaker>;
   circuitBreakers: Array<CircuitBreaker>;
+  governanceProposal?: Maybe<GovernanceProposal>;
+  governanceProposals: Array<GovernanceProposal>;
+  governanceVote?: Maybe<GovernanceVote>;
+  governanceVotes: Array<GovernanceVote>;
   gradualWeightUpdate?: Maybe<GradualWeightUpdate>;
   gradualWeightUpdates: Array<GradualWeightUpdate>;
   joinExit?: Maybe<JoinExit>;
   joinExits: Array<JoinExit>;
   latestPrice?: Maybe<LatestPrice>;
   latestPrices: Array<LatestPrice>;
+  lpmerkleTree?: Maybe<LpMerkleTree>;
+  lpmerkleTrees: Array<LpMerkleTree>;
   lprewardDistributionSnapshot?: Maybe<LpRewardDistributionSnapshot>;
   lprewardDistributionSnapshots: Array<LpRewardDistributionSnapshot>;
   managementOperation?: Maybe<ManagementOperation>;
@@ -4496,6 +5091,8 @@ export type Subscription = {
   poolContracts: Array<PoolContract>;
   poolHistoricalLiquidities: Array<PoolHistoricalLiquidity>;
   poolHistoricalLiquidity?: Maybe<PoolHistoricalLiquidity>;
+  poolPartyBurner?: Maybe<PoolPartyBurner>;
+  poolPartyBurners: Array<PoolPartyBurner>;
   poolShare?: Maybe<PoolShare>;
   poolShares: Array<PoolShare>;
   poolSnapshot?: Maybe<PoolSnapshot>;
@@ -4507,6 +5104,8 @@ export type Subscription = {
   priceRateProviders: Array<PriceRateProvider>;
   protocolIdData?: Maybe<ProtocolIdData>;
   protocolIdDatas: Array<ProtocolIdData>;
+  stakingMerkleTree?: Maybe<StakingMerkleTree>;
+  stakingMerkleTrees: Array<StakingMerkleTree>;
   stakingRewardDistributionSnapshot?: Maybe<StakingRewardDistributionSnapshot>;
   stakingRewardDistributionSnapshots: Array<StakingRewardDistributionSnapshot>;
   swap?: Maybe<Swap>;
@@ -4541,6 +5140,14 @@ export type Subscription = {
   userStakingRewardDistributionMetaData?: Maybe<UserStakingRewardDistributionMetaData>;
   userStakingRewardDistributionMetaDatas: Array<UserStakingRewardDistributionMetaData>;
   users: Array<User>;
+  vestedLiquidities: Array<VestedLiquidity>;
+  vestedLiquidity?: Maybe<VestedLiquidity>;
+  vestedStaking?: Maybe<VestedStaking>;
+  vestedStakings: Array<VestedStaking>;
+  vestingLiquidityClaimed?: Maybe<VestingLiquidityClaimed>;
+  vestingLiquidityClaimeds: Array<VestingLiquidityClaimed>;
+  vestingStakingClaimed?: Maybe<VestingStakingClaimed>;
+  vestingStakingClaimeds: Array<VestingStakingClaimed>;
 };
 
 
@@ -4639,6 +5246,42 @@ export type SubscriptionCircuitBreakersArgs = {
 };
 
 
+export type SubscriptionGovernanceProposalArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionGovernanceProposalsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<GovernanceProposal_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<GovernanceProposal_Filter>;
+};
+
+
+export type SubscriptionGovernanceVoteArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionGovernanceVotesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<GovernanceVote_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<GovernanceVote_Filter>;
+};
+
+
 export type SubscriptionGradualWeightUpdateArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
@@ -4690,6 +5333,24 @@ export type SubscriptionLatestPricesArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<LatestPrice_Filter>;
+};
+
+
+export type SubscriptionLpmerkleTreeArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionLpmerkleTreesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<LpMerkleTree_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<LpMerkleTree_Filter>;
 };
 
 
@@ -4787,6 +5448,24 @@ export type SubscriptionPoolHistoricalLiquidityArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
   subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionPoolPartyBurnerArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionPoolPartyBurnersArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<PoolPartyBurner_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<PoolPartyBurner_Filter>;
 };
 
 
@@ -4888,6 +5567,24 @@ export type SubscriptionProtocolIdDatasArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<ProtocolIdData_Filter>;
+};
+
+
+export type SubscriptionStakingMerkleTreeArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionStakingMerkleTreesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<StakingMerkleTree_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<StakingMerkleTree_Filter>;
 };
 
 
@@ -5196,6 +5893,78 @@ export type SubscriptionUsersArgs = {
   where?: InputMaybe<User_Filter>;
 };
 
+
+export type SubscriptionVestedLiquiditiesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<VestedLiquidity_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<VestedLiquidity_Filter>;
+};
+
+
+export type SubscriptionVestedLiquidityArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionVestedStakingArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionVestedStakingsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<VestedStaking_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<VestedStaking_Filter>;
+};
+
+
+export type SubscriptionVestingLiquidityClaimedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionVestingLiquidityClaimedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<VestingLiquidityClaimed_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<VestingLiquidityClaimed_Filter>;
+};
+
+
+export type SubscriptionVestingStakingClaimedArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionVestingStakingClaimedsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<VestingStakingClaimed_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<VestingStakingClaimed_Filter>;
+};
+
 export type Swap = {
   __typename?: 'Swap';
   caller: Scalars['Bytes']['output'];
@@ -5335,7 +6104,6 @@ export enum SwapFeeUpdate_OrderBy {
   PoolOfficialPoolWeight = 'pool__officialPoolWeight',
   PoolOracleEnabled = 'pool__oracleEnabled',
   PoolOwner = 'pool__owner',
-  PoolPoolAllowed = 'pool__poolAllowed',
   PoolPoolType = 'pool__poolType',
   PoolPoolTypeVersion = 'pool__poolTypeVersion',
   PoolPrincipalToken = 'pool__principalToken',
@@ -5580,7 +6348,6 @@ export enum Swap_OrderBy {
   PoolIdOfficialPoolWeight = 'poolId__officialPoolWeight',
   PoolIdOracleEnabled = 'poolId__oracleEnabled',
   PoolIdOwner = 'poolId__owner',
-  PoolIdPoolAllowed = 'poolId__poolAllowed',
   PoolIdPoolType = 'poolId__poolType',
   PoolIdPoolTypeVersion = 'poolId__poolTypeVersion',
   PoolIdPrincipalToken = 'poolId__principalToken',
@@ -5755,6 +6522,7 @@ export enum TokenClaimed_OrderBy {
 export type TokenDeposited = {
   __typename?: 'TokenDeposited';
   amount: Scalars['BigInt']['output'];
+  blockTimestamp: Scalars['BigInt']['output'];
   epochId: Scalars['BigInt']['output'];
   id: Scalars['ID']['output'];
   token: Scalars['Bytes']['output'];
@@ -5772,6 +6540,14 @@ export type TokenDeposited_Filter = {
   amount_not?: InputMaybe<Scalars['BigInt']['input']>;
   amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   and?: InputMaybe<Array<InputMaybe<TokenDeposited_Filter>>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   epochId?: InputMaybe<Scalars['BigInt']['input']>;
   epochId_gt?: InputMaybe<Scalars['BigInt']['input']>;
   epochId_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -5803,6 +6579,7 @@ export type TokenDeposited_Filter = {
 
 export enum TokenDeposited_OrderBy {
   Amount = 'amount',
+  BlockTimestamp = 'blockTimestamp',
   EpochId = 'epochId',
   Id = 'id',
   Token = 'token'
@@ -6049,7 +6826,6 @@ export enum TokenPrice_OrderBy {
   PoolIdOfficialPoolWeight = 'poolId__officialPoolWeight',
   PoolIdOracleEnabled = 'poolId__oracleEnabled',
   PoolIdOwner = 'poolId__owner',
-  PoolIdPoolAllowed = 'poolId__poolAllowed',
   PoolIdPoolType = 'poolId__poolType',
   PoolIdPoolTypeVersion = 'poolId__poolTypeVersion',
   PoolIdPrincipalToken = 'poolId__principalToken',
@@ -6455,7 +7231,6 @@ export enum Token_OrderBy {
   PoolOfficialPoolWeight = 'pool__officialPoolWeight',
   PoolOracleEnabled = 'pool__oracleEnabled',
   PoolOwner = 'pool__owner',
-  PoolPoolAllowed = 'pool__poolAllowed',
   PoolPoolType = 'pool__poolType',
   PoolPoolTypeVersion = 'pool__poolTypeVersion',
   PoolPrincipalToken = 'pool__principalToken',
@@ -6930,6 +7705,7 @@ export enum UserInternalBalance_OrderBy {
 export type UserLpRewardDistributionMetaData = {
   __typename?: 'UserLPRewardDistributionMetaData';
   address: Scalars['Bytes']['output'];
+  epoch: Scalars['BigInt']['output'];
   id: Scalars['ID']['output'];
   ipfsCid: Scalars['String']['output'];
   value: Scalars['BigInt']['output'];
@@ -6949,6 +7725,14 @@ export type UserLpRewardDistributionMetaData_Filter = {
   address_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
   address_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
   and?: InputMaybe<Array<InputMaybe<UserLpRewardDistributionMetaData_Filter>>>;
+  epoch?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  epoch_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_not?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   id?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
   id_gte?: InputMaybe<Scalars['ID']['input']>;
@@ -6990,6 +7774,7 @@ export type UserLpRewardDistributionMetaData_Filter = {
 
 export enum UserLpRewardDistributionMetaData_OrderBy {
   Address = 'address',
+  Epoch = 'epoch',
   Id = 'id',
   IpfsCid = 'ipfsCid',
   Value = 'value'
@@ -6998,6 +7783,7 @@ export enum UserLpRewardDistributionMetaData_OrderBy {
 export type UserStakingRewardDistributionMetaData = {
   __typename?: 'UserStakingRewardDistributionMetaData';
   address: Scalars['Bytes']['output'];
+  epoch: Scalars['BigInt']['output'];
   id: Scalars['ID']['output'];
   ipfsCid: Scalars['String']['output'];
   value: Scalars['BigInt']['output'];
@@ -7017,6 +7803,14 @@ export type UserStakingRewardDistributionMetaData_Filter = {
   address_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
   address_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
   and?: InputMaybe<Array<InputMaybe<UserStakingRewardDistributionMetaData_Filter>>>;
+  epoch?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  epoch_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_not?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   id?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
   id_gte?: InputMaybe<Scalars['ID']['input']>;
@@ -7058,6 +7852,7 @@ export type UserStakingRewardDistributionMetaData_Filter = {
 
 export enum UserStakingRewardDistributionMetaData_OrderBy {
   Address = 'address',
+  Epoch = 'epoch',
   Id = 'id',
   IpfsCid = 'ipfsCid',
   Value = 'value'
@@ -7088,12 +7883,238 @@ export enum User_OrderBy {
   UserInternalBalances = 'userInternalBalances'
 }
 
+export type VestedLiquidity = {
+  __typename?: 'VestedLiquidity';
+  amount: Scalars['BigInt']['output'];
+  beneficiary: Scalars['Bytes']['output'];
+  id: Scalars['ID']['output'];
+  timestamp: Scalars['BigInt']['output'];
+};
+
+export type VestedLiquidity_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  amount?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  amount_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_not?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  and?: InputMaybe<Array<InputMaybe<VestedLiquidity_Filter>>>;
+  beneficiary?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  beneficiary_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_not?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  or?: InputMaybe<Array<InputMaybe<VestedLiquidity_Filter>>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+};
+
+export enum VestedLiquidity_OrderBy {
+  Amount = 'amount',
+  Beneficiary = 'beneficiary',
+  Id = 'id',
+  Timestamp = 'timestamp'
+}
+
+export type VestedStaking = {
+  __typename?: 'VestedStaking';
+  amount: Scalars['BigInt']['output'];
+  beneficiary: Scalars['Bytes']['output'];
+  id: Scalars['ID']['output'];
+  timestamp: Scalars['BigInt']['output'];
+};
+
+export type VestedStaking_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  amount?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  amount_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_not?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  and?: InputMaybe<Array<InputMaybe<VestedStaking_Filter>>>;
+  beneficiary?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  beneficiary_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_not?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  or?: InputMaybe<Array<InputMaybe<VestedStaking_Filter>>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+};
+
+export enum VestedStaking_OrderBy {
+  Amount = 'amount',
+  Beneficiary = 'beneficiary',
+  Id = 'id',
+  Timestamp = 'timestamp'
+}
+
+export type VestingLiquidityClaimed = {
+  __typename?: 'VestingLiquidityClaimed';
+  amount: Scalars['BigInt']['output'];
+  beneficiary: Scalars['Bytes']['output'];
+  id: Scalars['ID']['output'];
+  timestamp: Scalars['BigInt']['output'];
+};
+
+export type VestingLiquidityClaimed_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  amount?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  amount_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_not?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  and?: InputMaybe<Array<InputMaybe<VestingLiquidityClaimed_Filter>>>;
+  beneficiary?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  beneficiary_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_not?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  or?: InputMaybe<Array<InputMaybe<VestingLiquidityClaimed_Filter>>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+};
+
+export enum VestingLiquidityClaimed_OrderBy {
+  Amount = 'amount',
+  Beneficiary = 'beneficiary',
+  Id = 'id',
+  Timestamp = 'timestamp'
+}
+
+export type VestingStakingClaimed = {
+  __typename?: 'VestingStakingClaimed';
+  amount: Scalars['BigInt']['output'];
+  beneficiary: Scalars['Bytes']['output'];
+  id: Scalars['ID']['output'];
+  timestamp: Scalars['BigInt']['output'];
+};
+
+export type VestingStakingClaimed_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  amount?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  amount_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_not?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  and?: InputMaybe<Array<InputMaybe<VestingStakingClaimed_Filter>>>;
+  beneficiary?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  beneficiary_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_not?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  beneficiary_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  or?: InputMaybe<Array<InputMaybe<VestingStakingClaimed_Filter>>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+};
+
+export enum VestingStakingClaimed_OrderBy {
+  Amount = 'amount',
+  Beneficiary = 'beneficiary',
+  Id = 'id',
+  Timestamp = 'timestamp'
+}
+
 export type _Block_ = {
   __typename?: '_Block_';
   /** The hash of the block */
   hash?: Maybe<Scalars['Bytes']['output']>;
   /** The block number */
   number: Scalars['Int']['output'];
+  /** The hash of the parent block */
+  parentHash?: Maybe<Scalars['Bytes']['output']>;
   /** Integer representation of the timestamp stored in blocks for the chain */
   timestamp?: Maybe<Scalars['Int']['output']>;
 };
@@ -7135,8 +8156,8 @@ export type GetTotalAlocationPerEpochQueryQueryVariables = Exact<{
 }>;
 
 
-export type GetTotalAlocationPerEpochQueryQuery = { __typename?: 'Query', tokenMints: Array<{ __typename?: 'TokenMint', amount: any }> };
+export type GetTotalAlocationPerEpochQueryQuery = { __typename?: 'Query', tokenMints: Array<{ __typename?: 'TokenMint', amount: any, timestamp: any }> };
 
 
 export const GetPoolsQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPoolsQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Pool_filter"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"blockNumber"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pools"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"createTime"}},{"kind":"Argument","name":{"kind":"Name","value":"orderDirection"},"value":{"kind":"EnumValue","value":"asc"}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"block"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"number"},"value":{"kind":"Variable","name":{"kind":"Name","value":"blockNumber"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"shares"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userAddress"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"totalShares"}},{"kind":"Field","name":{"kind":"Name","value":"officialPoolWeight"}}]}}]}}]} as unknown as DocumentNode<GetPoolsQueryQuery, GetPoolsQueryQueryVariables>;
-export const GetTotalAlocationPerEpochQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTotalAlocationPerEpochQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TokenMint_filter"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tokenMints"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}}]}}]}}]} as unknown as DocumentNode<GetTotalAlocationPerEpochQueryQuery, GetTotalAlocationPerEpochQueryQueryVariables>;
+export const GetTotalAlocationPerEpochQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTotalAlocationPerEpochQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TokenMint_filter"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tokenMints"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"timestamp"}}]}}]}}]} as unknown as DocumentNode<GetTotalAlocationPerEpochQueryQuery, GetTotalAlocationPerEpochQueryQueryVariables>;

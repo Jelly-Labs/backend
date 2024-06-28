@@ -14,7 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  query GetPoolsQuery($where: Pool_filter!, $blockNumber: Int!) {\n    pools(\n      orderBy: createTime\n      orderDirection: asc\n      where: $where\n      block: { number: $blockNumber }\n    ) {\n      shares {\n        userAddress {\n          id\n        }\n      }\n      id\n      address\n      totalShares\n      officialPoolWeight\n    }\n  }\n": types.GetPoolsQueryDocument,
-    "\n  query GetTotalAlocationPerEpochQuery($where: TokenMint_filter!) {\n    tokenMints(where: $where) {\n      amount\n    }\n  }\n": types.GetTotalAlocationPerEpochQueryDocument,
+    "\n  query GetTotalAlocationPerEpochQuery($where: TokenMint_filter!) {\n    tokenMints(where: $where) {\n      amount\n      timestamp\n    }\n  }\n": types.GetTotalAlocationPerEpochQueryDocument,
 };
 
 /**
@@ -38,7 +38,7 @@ export function graphql(source: "\n  query GetPoolsQuery($where: Pool_filter!, $
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetTotalAlocationPerEpochQuery($where: TokenMint_filter!) {\n    tokenMints(where: $where) {\n      amount\n    }\n  }\n"): (typeof documents)["\n  query GetTotalAlocationPerEpochQuery($where: TokenMint_filter!) {\n    tokenMints(where: $where) {\n      amount\n    }\n  }\n"];
+export function graphql(source: "\n  query GetTotalAlocationPerEpochQuery($where: TokenMint_filter!) {\n    tokenMints(where: $where) {\n      amount\n      timestamp\n    }\n  }\n"): (typeof documents)["\n  query GetTotalAlocationPerEpochQuery($where: TokenMint_filter!) {\n    tokenMints(where: $where) {\n      amount\n      timestamp\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

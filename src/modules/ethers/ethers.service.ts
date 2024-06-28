@@ -201,6 +201,33 @@ export class EthersService {
     }
   }
 
+  async findClosestBlock(targetTimestamp: number, startBlock: number) {
+    let high = await this.provider.getBlockNumber();
+    let low = startBlock;
+    let mid: number;
+
+    while (low <= high) {
+      mid = Math.floor((low + high) / 2);
+      const block = await this.provider.getBlock(mid);
+      const blockTime = block.timestamp;
+
+      if (blockTime < targetTimestamp) {
+        low = mid + 1;
+      } else if (blockTime > targetTimestamp) {
+        high = mid - 1;
+      } else {
+        return mid;
+      }
+    }
+
+    const blockLow = await this.provider.getBlock(low);
+    const blockHigh = await this.provider.getBlock(high);
+    const diffLow = Math.abs(blockLow.timestamp - targetTimestamp);
+    const diffHigh = Math.abs(blockHigh.timestamp - targetTimestamp);
+
+    return diffLow < diffHigh ? low : high;
+  }
+
   async getChestVestingPositionTotalVestedAmount(
     index: number,
     blockNumber: number,

@@ -97,9 +97,14 @@ export class RewardService {
       this.logger.error('no token mints found for epoch: ' + epoch);
       return;
     }
+
+    const mintBlock = await this.ethersService.findClosestBlock(
+      totalAllocation.tokenMints[0].timestamp,
+      weeklyBlockNumbers[6],
+    );
     const weightLP = await this.ethersService.getLPWeightOfTotalAllocation(
       lpContractAddress,
-      weeklyBlockNumbers[6],
+      mintBlock,
     );
 
     const amountForLP = new Decimal(totalAllocation.tokenMints[0].amount)

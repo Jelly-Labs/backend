@@ -33,6 +33,7 @@ export type IPFSConfig = {
 
 export type Amount = {
   amount: string;
+  timestamp: number;
 };
 
 export interface Pools {
