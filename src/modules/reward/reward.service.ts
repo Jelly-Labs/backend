@@ -285,27 +285,10 @@ export class RewardService {
         const chestOwnerAddress = ethers.utils.hexlify(
           ethers.utils.zeroPad(ethers.utils.stripZeros(chestStorageOwners), 20),
         );
-        const totalVestedAmount =
-          await this.ethersService.getChestVestingPositionTotalVestedAmount(
-            i,
-            blockNumber,
-          );
-        const releasedAmount =
-          await this.ethersService.getChestVestingPositionReleasedAmount(
-            i,
-            blockNumber,
-          );
-        const blockNumberTimestamp =
-          await this.ethersService.getBlockNumberTimestamp(blockNumber);
-        const chestVestingPositionSlot2 =
-          await this.ethersService.getChestVestingPositionSlot2(i, blockNumber);
+        const blkNmb = new Decimal(blockNumber);
         const chestVotingPower = await this.ethersService
           .getChestSmartContract()
-          .estimateChestPower(blockNumberTimestamp, {
-            totalVestedAmount: new Decimal(totalVestedAmount).toFixed(0),
-            releasedAmount: new Decimal(releasedAmount).toFixed(0),
-            ...chestVestingPositionSlot2,
-          });
+          .getChestPower(i, { blockTag: blkNmb.toHexadecimal() });
         if (chestsVotingPowerPerBlock[chestOwnerAddress]) {
           chestsVotingPowerPerBlock[chestOwnerAddress] = new Decimal(
             chestVotingPower.toString(),
@@ -322,6 +305,10 @@ export class RewardService {
           .add(totalChestVotingPower)
           .toNumber();
       }
+      this.logger.log(
+        'totalChestVotingPower',
+        totalChestVotingPower.toString(),
+      );
       if (totalChestVotingPower !== 0) {
         // check for edge case when there is multiple same block numbers
         if (chestVotingPowers[blockNumber] === undefined) {
