@@ -13,6 +13,7 @@ export class EthersService {
   private readonly wallet: Wallet;
   private readonly stakingDistributionSmartContract: Contract;
   private readonly lpDistributionSmartContract: Contract;
+  private readonly lpThirdPartyDistributionSmartContract: Contract;
   private readonly chestSmartContract: Contract;
   private readonly dailySnapshotSmartContract: Contract;
   private readonly governanceSmartContract: Contract;
@@ -49,6 +50,11 @@ export class EthersService {
       this.appConfigService.lpDistributionAbi(),
       this.wallet,
     );
+    this.lpThirdPartyDistributionSmartContract = new ethers.Contract(
+      this.appConfigService.lpThirdPartyDistributionAddress(),
+      this.appConfigService.lpThirdPartyDistributionAbi(),
+      this.wallet,
+    );
     this.stakingDistributionSmartContract = new ethers.Contract(
       this.appConfigService.stakingDistributionAddress(),
       this.appConfigService.stakingDistributionAbi(),
@@ -72,6 +78,10 @@ export class EthersService {
     return this.lpDistributionSmartContract;
   }
 
+  getLPThirdPartyDistributionSmartContract() {
+    return this.lpThirdPartyDistributionSmartContract;
+  }
+
   getStakingDistributionSmartContract() {
     return this.stakingDistributionSmartContract;
   }
@@ -88,6 +98,13 @@ export class EthersService {
     return this.minterSmartContract;
   }
 
+  getERC20SmartContract(tokenAddress: string) {
+    return new ethers.Contract(
+      tokenAddress,
+      this.appConfigService.erc20Abi(),
+      this.wallet,
+    );
+  }
   /**
    * Retrieves the current block number from the Ethereum provider.
    *

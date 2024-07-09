@@ -408,4 +408,84 @@ export class RewardService {
 
     return formattedData;
   }
+
+  async weeklyLPThirdPartyRewardsDistributionSnapshotPost(
+    epoch = '0',
+    token = '0x0',
+    tokenAmount = '0',
+  ) {
+    const content =
+      await this.weeklyLPThirdPartyRewardsDistributionSnapshotIPFSData(
+        epoch,
+        tokenAmount,
+      );
+
+    if (content) {
+      this.logger.debug('start sending merklee tree to the ipfs...');
+
+      const ipfsHash = await this.ipfs.upload(content);
+
+      this.logger.debug(
+        `ipfsHah: ${ipfsHash}, merkleeTreeRoot: ${content.merkleTreeRoot}`,
+      );
+      this.logger.debug('call to create Third Party incentives...');
+
+      const approveTokenSpend = await this.ethersService
+        .getERC20SmartContract(token)
+        .approve(
+          this.ethersService.getLPThirdPartyDistributionSmartContract().address,
+          tokenAmount,
+        );
+      await approveTokenSpend.wait();
+
+      const createThridPartyDistribution = this.ethersService
+        .getLPThirdPartyDistributionSmartContract()
+        .createEpoch(token, tokenAmount, content.merkleTreeRoot, ipfsHash);
+
+      this.logger.debug(
+        'transaction successfully submitted ' +
+          createThridPartyDistribution.hash,
+      );
+      const receipt = await createThridPartyDistribution.wait();
+      this.logger.debug(
+        'transaction accepted by the network ' +
+          createThridPartyDistribution.hash,
+      );
+      return receipt;
+    }
+  }
+
+  async weeklyLPThirdPartyRewardsDistributionSnapshotIPFSData(
+    epoch = '0',
+    tokenAmount = '0',
+    incentivisedPools: string[] = [],
+  ) {
+    this.logger.debug('get epoch daily block numbers...');
+    const weeklyBlockNumbers = await this.getEpochSnapshots(epoch);
+    this.logger.debug('done getting epoch daily block numbers...');
+    this.logger.debug('started calculating process...');
+
+    const calculateWeeklyRewardInPercentageInPool =
+      await this.officialPoolService.calculateWeeklyLPThirdPartyRewardsDistribution(
+        weeklyBlockNumbers,
+        incentivisedPools,
+        tokenAmount,
+      );
+
+    this.logger.debug('end calculating process...');
+
+    if (calculateWeeklyRewardInPercentageInPool) {
+      this.logger.debug('start generating ipfs content...');
+      const { content } = this.ipfs.generateIpfsContent(
+        calculateWeeklyRewardInPercentageInPool,
+        weeklyBlockNumbers,
+        'LP Third Party Reward Distribution',
+        epoch,
+      );
+
+      return content;
+    } else {
+      this.logger.debug('could not generate ipfs content');
+    }
+  }
 }

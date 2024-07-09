@@ -62,6 +62,39 @@ export class OfficialPoolService {
     return this.sumAllLpPercent(sumAllLp, totalAllocation);
   }
 
+  async calculateWeeklyLPThirdPartyRewardsDistribution(
+    weeklyBlockNumbers: number[],
+    incentivisedPools: string[],
+    totalAllocation: string,
+  ): Promise<string[][]> {
+    const resultObject = {};
+    for (const blockNumber of weeklyBlockNumbers) {
+      resultObject[blockNumber] = {};
+
+      const subGraphPools: Pools = await this.qqlService.request(
+        GET_POOLS_QUERY,
+        {
+          where: { id_in: incentivisedPools },
+          blockNumber: blockNumber,
+        },
+      );
+
+      for (const incentivisedPool of subGraphPools.pools) {
+        const result = await this.processPool(
+          subGraphPools.pools,
+          incentivisedPool.id,
+          blockNumber,
+          subGraphPools.pools.length,
+        );
+
+        resultObject[blockNumber][incentivisedPool.id] = result;
+      }
+    }
+
+    const sumAllLp = this.sumAllLpPercentInPoolPerBlockNumber(resultObject);
+
+    return this.sumAllLpPercent(sumAllLp, totalAllocation);
+  }
   /**
    * Sums up all LP (Liquidity Provider) percentages within each pool for each block number.
    *
@@ -139,7 +172,7 @@ export class OfficialPoolService {
     const { address, shares } = data.find((el: any) => el.id === officialPool);
 
     if (address && shares) {
-      return await this.processSharesPerPool({
+      return await this.processSharesPerOfficialPool({
         shares,
         blockNumber,
         poolAddress: address,
@@ -148,7 +181,56 @@ export class OfficialPoolService {
       });
     }
   }
+  private async processPool(
+    data: Pool[],
+    officialPool: string,
+    blockNumber: number,
+    numberOfPools: number,
+  ) {
+    const { address, shares } = data.find((el: any) => el.id === officialPool);
 
+    if (address && shares) {
+      return await this.processSharesPerPool({
+        shares,
+        blockNumber,
+        poolAddress: address,
+        numberOfPools,
+      });
+    }
+  }
+
+  private async processSharesPerPool({
+    shares,
+    blockNumber,
+    poolAddress,
+    numberOfPools,
+  }: {
+    shares: any[];
+    blockNumber: number;
+    poolAddress: string;
+    numberOfPools: number;
+  }): Promise<NestedObject> {
+    const result = {};
+    for (const share of shares) {
+      const lpShare = await this.getLpShare({
+        blockNumber,
+        poolAddress,
+        lpId: share.userAddress.id,
+      });
+
+      if (!result[share.userAddress.id]) {
+        result[share.userAddress.id] = new Decimal(0);
+      }
+      const lpShareNormalizedByWeightsAndNumberOfPools =
+        lpShare.div(numberOfPools);
+
+      result[share.userAddress.id] = result[share.userAddress.id].add(
+        lpShareNormalizedByWeightsAndNumberOfPools,
+      );
+    }
+
+    return result;
+  }
   /**
    * Processes LP (Liquidity Provider) shares for each user in a given pool.
    *
@@ -161,7 +243,7 @@ export class OfficialPoolService {
    * @param {string} params.totalWeight - Total weight of all offical pools in that block
    * @returns {Promise<NestedObject>} - A Promise resolving to an object containing user IDs and their corresponding processed LP shares.
    */
-  private async processSharesPerPool({
+  private async processSharesPerOfficialPool({
     shares,
     blockNumber,
     poolAddress,

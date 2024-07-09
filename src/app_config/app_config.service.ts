@@ -39,8 +39,16 @@ export class AppConfigService {
     return this.configService.get('GRAPHS_IPFS_API_ENDPOINT');
   }
 
+  getGraph2IPFSEndpoint(): string {
+    return this.configService.get('GRAPHS2_IPFS_API_ENDPOINT');
+  }
+
   lpDistributionAddress(): string {
     return this.configService.get('LP_REWARD_DISTRIBUTION_ADDRESS');
+  }
+
+  lpThirdPartyDistributionAddress(): string {
+    return this.configService.get('LP_THIRD_PARTY_REWARD_DISTRIBUTION_ADDRESS');
   }
 
   stakingDistributionAddress(): string {
@@ -90,12 +98,35 @@ export class AppConfigService {
     return response.abi;
   }
 
+  erc20Abi(): any[] {
+    const filePath = path.join(process.cwd(), 'src', 'abi', 'erc20.abi.json');
+
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
+    const response = JSON.parse(fileContent);
+
+    return response.abi;
+  }
+
   lpDistributionAbi(): any[] {
     const filePath = path.join(
       process.cwd(),
       'src',
       'abi',
       'lp-distribution.abi.json',
+    );
+
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
+    const response = JSON.parse(fileContent);
+
+    return response.abi;
+  }
+
+  lpThirdPartyDistributionAbi(): any[] {
+    const filePath = path.join(
+      process.cwd(),
+      'src',
+      'abi',
+      'lp-third-party-distribution.abi.json',
     );
 
     const fileContent = fs.readFileSync(filePath, 'utf-8');
