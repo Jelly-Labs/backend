@@ -33,8 +33,8 @@ export class RewardService {
       this.logger.debug(
         `ipfsHah: ${ipfsHash}, merkleeTreeRoot: ${content.merkleTreeRoot}`,
       );
+      // return;
       this.logger.debug('call Governance contract to create proposal...');
-
       const createEpochFunctionCalldata = this.ethersService
         .getLPDistributionSmartContract()
         .interface.encodeFunctionData('createEpoch', [
@@ -430,17 +430,9 @@ export class RewardService {
       );
       this.logger.debug('call to create Third Party incentives...');
 
-      const approveTokenSpend = await this.ethersService
-        .getERC20SmartContract(token)
-        .approve(
-          this.ethersService.getLPThirdPartyDistributionSmartContract().address,
-          tokenAmount,
-        );
-      await approveTokenSpend.wait();
-
       const createThridPartyDistribution = this.ethersService
         .getLPThirdPartyDistributionSmartContract()
-        .createEpoch(token, tokenAmount, content.merkleTreeRoot, ipfsHash);
+        .createDrop(token, tokenAmount, content.merkleTreeRoot, ipfsHash);
 
       this.logger.debug(
         'transaction successfully submitted ' +

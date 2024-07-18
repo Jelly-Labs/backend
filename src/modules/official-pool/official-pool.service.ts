@@ -3,11 +3,11 @@ import Decimal from 'decimal.js';
 import { utils } from 'ethers';
 // import { utils } from 'ethers';
 
-import { Pool } from '../../gql/graphql';
+import { PoolShare } from '../../gql/graphql';
 import { NestedObject, Pools } from '../../types/interface';
 import { EthersService } from '../ethers/ethers.service';
 import { QqlService } from '../qql/qql.service';
-import { GET_POOLS_QUERY } from '../../graphql/queries';
+import { GET_POOLS_QUERY, GET_POOLS_SHARES_QUERY } from '../../graphql/queries';
 
 @Injectable()
 export class OfficialPoolService {
@@ -46,7 +46,7 @@ export class OfficialPoolService {
 
       for (const officialPool of subGraphPools.pools) {
         const result = await this.processOfficialPool(
-          subGraphPools.pools,
+          officialPool.address,
           officialPool.id,
           blockNumber,
           officialPool.officialPoolWeight,
@@ -81,7 +81,7 @@ export class OfficialPoolService {
 
       for (const incentivisedPool of subGraphPools.pools) {
         const result = await this.processPool(
-          subGraphPools.pools,
+          incentivisedPool.address,
           incentivisedPool.id,
           blockNumber,
           subGraphPools.pools.length,
@@ -112,7 +112,7 @@ export class OfficialPoolService {
       for (const poolAddress in object[blocknumber] as NestedObject) {
         for (const lpAddress in object[blocknumber][poolAddress]) {
           result[blocknumber][lpAddress] = (
-            result[blocknumber][lpAddress] || new Decimal(0)
+            (result[blocknumber][lpAddress] as Decimal) || new Decimal(0)
           ).add(object[blocknumber][poolAddress][lpAddress]);
         }
       }
@@ -163,40 +163,65 @@ export class OfficialPoolService {
    * @returns {Promise<Object | undefined>} - A Promise resolving to an object containing user IDs and their corresponding processed LP shares for the specified official pool. Returns undefined if the official pool or its relevant data is not found.
    */
   private async processOfficialPool(
-    data: Pool[],
-    officialPool: string,
+    officialPoolAddress: string,
+    officialPoolId: string,
     blockNumber: number,
     officialPoolWeight: string,
     totalWeight: number,
   ) {
-    const { address, shares } = data.find((el: any) => el.id === officialPool);
+    const shares = await this.fetchPoolShares(officialPoolId, blockNumber);
 
-    if (address && shares) {
-      return await this.processSharesPerOfficialPool({
-        shares,
-        blockNumber,
-        poolAddress: address,
-        officialPoolWeight,
-        totalWeight,
-      });
-    }
+    return await this.processSharesPerOfficialPool({
+      shares,
+      blockNumber,
+      poolAddress: officialPoolAddress,
+      officialPoolWeight,
+      totalWeight,
+    });
   }
+
+  private async fetchPoolShares(
+    poolId: string,
+    blockNumber: number,
+  ): Promise<PoolShare[]> {
+    const shares: PoolShare[] = [];
+    let fetchFinished = false;
+    let i = 0;
+    while (!fetchFinished) {
+      const subGraphPools: Pools = await this.qqlService.request(
+        GET_POOLS_SHARES_QUERY,
+        {
+          where: { id: poolId },
+          blockNumber: blockNumber,
+          skip: i * 1000,
+        },
+      );
+      if (i == 1) {
+        console.log(subGraphPools.pools[0].shares);
+      }
+      if (shares) shares.push(...subGraphPools.pools[0].shares);
+
+      if (subGraphPools.pools[0].shares.length !== 1000) fetchFinished = true;
+
+      ++i;
+    }
+    return shares;
+  }
+
   private async processPool(
-    data: Pool[],
-    officialPool: string,
+    officialPoolAddress: string,
+    officialPoolId: string,
     blockNumber: number,
     numberOfPools: number,
   ) {
-    const { address, shares } = data.find((el: any) => el.id === officialPool);
+    const shares = await this.fetchPoolShares(officialPoolId, blockNumber);
 
-    if (address && shares) {
-      return await this.processSharesPerPool({
-        shares,
-        blockNumber,
-        poolAddress: address,
-        numberOfPools,
-      });
-    }
+    return await this.processSharesPerPool({
+      shares,
+      blockNumber,
+      poolAddress: officialPoolAddress,
+      numberOfPools,
+    });
   }
 
   private async processSharesPerPool({
