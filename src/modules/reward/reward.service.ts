@@ -1,8 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import Decimal from 'decimal.js';
 import { ethers, utils } from 'ethers';
-import { GET_TOTAL_ALLOCATION_PER_EPOCH } from '../../graphql/queries';
-import { NestedObject, TokenMints } from '../../types/interface';
+import {
+  GET_JOIN_EXITS_PER_ADDRESS,
+  GET_TOTAL_ALLOCATION_PER_EPOCH,
+} from '../../graphql/queries';
+import { NestedObject, TokenMints, JoinExits } from '../../types/interface';
 import { EthersService } from '../ethers/ethers.service';
 import { IpfsService } from '../ipfs/ipfs.service';
 import { OfficialPoolService } from '../official-pool/official-pool.service';
@@ -33,8 +36,8 @@ export class RewardService {
       this.logger.debug(
         `ipfsHah: ${ipfsHash}, merkleeTreeRoot: ${content.merkleTreeRoot}`,
       );
+      // return;
       this.logger.debug('call Governance contract to create proposal...');
-
       const createEpochFunctionCalldata = this.ethersService
         .getLPDistributionSmartContract()
         .interface.encodeFunctionData('createEpoch', [
@@ -407,5 +410,112 @@ export class RewardService {
     );
 
     return formattedData;
+  }
+
+  async bitgetUsersLiquidity(userAddres: string) {
+    const joinsAndExits: JoinExits = await this.qqlService.request(
+      GET_JOIN_EXITS_PER_ADDRESS,
+      {
+        where: {
+          pool: '0x55d45c15a95abfbbce3c88f90adcd62cd873a2db000200000000000000000005',
+          sender: userAddres,
+        },
+      },
+    );
+    let total = new Decimal(0);
+    // const tenDaysInSeconds = 864000;
+    // let startTimestamp = 0;
+    for (let i = 0; i < joinsAndExits.joinExits.length; i++) {
+      const element = joinsAndExits.joinExits[i];
+      console.log(element);
+      if (element.type == 'Join') {
+        total = total.add(element.valueUSD);
+        // if (startTimestamp == 0) startTimestamp = element.timestamp;
+      } else {
+        total = total.sub(element.valueUSD);
+      }
+      console.log(total.toNumber());
+      if (total.toNumber() > 20) {
+        return {
+          status: 0,
+          data: { timestamp: element.timestamp, tx: element.tx },
+        };
+      }
+    }
+    return { status: 1, data: {} };
+  }
+
+  async weeklyLPThirdPartyRewardsDistributionSnapshotPost(
+    epoch = '0',
+    token = '0x0',
+    tokenAmount = '0',
+    incentivisedPool = [],
+  ) {
+    const content =
+      await this.weeklyLPThirdPartyRewardsDistributionSnapshotIPFSData(
+        epoch,
+        tokenAmount,
+        incentivisedPool,
+      );
+
+    if (content) {
+      this.logger.debug('start sending merklee tree to the ipfs...');
+
+      const ipfsHash = await this.ipfs.upload(content);
+
+      this.logger.debug(
+        `ipfsHah: ${ipfsHash}, merkleeTreeRoot: ${content.merkleTreeRoot}`,
+      );
+      this.logger.debug('call to create Third Party incentives...');
+      // return;
+      const createThridPartyDistribution = this.ethersService
+        .getLPThirdPartyDistributionSmartContract()
+        .createDrop(token, tokenAmount, content.merkleTreeRoot, ipfsHash);
+
+      this.logger.debug(
+        'transaction successfully submitted ' +
+          createThridPartyDistribution.hash,
+      );
+      const receipt = await createThridPartyDistribution.wait();
+      this.logger.debug(
+        'transaction accepted by the network ' +
+          createThridPartyDistribution.hash,
+      );
+      return receipt;
+    }
+  }
+
+  async weeklyLPThirdPartyRewardsDistributionSnapshotIPFSData(
+    epoch = '0',
+    tokenAmount = '0',
+    incentivisedPools: string[] = [],
+  ) {
+    this.logger.debug('get epoch daily block numbers...');
+    const weeklyBlockNumbers = await this.getEpochSnapshots(epoch);
+    this.logger.debug('done getting epoch daily block numbers...');
+    this.logger.debug('started calculating process...');
+
+    const calculateWeeklyRewardInPercentageInPool =
+      await this.officialPoolService.calculateWeeklyLPThirdPartyRewardsDistribution(
+        weeklyBlockNumbers,
+        incentivisedPools,
+        tokenAmount,
+      );
+
+    this.logger.debug('end calculating process...');
+
+    if (calculateWeeklyRewardInPercentageInPool) {
+      this.logger.debug('start generating ipfs content...');
+      const { content } = this.ipfs.generateIpfsContent(
+        calculateWeeklyRewardInPercentageInPool,
+        weeklyBlockNumbers,
+        'LP Third Party Reward Distribution',
+        epoch,
+      );
+
+      return content;
+    } else {
+      this.logger.debug('could not generate ipfs content');
+    }
   }
 }

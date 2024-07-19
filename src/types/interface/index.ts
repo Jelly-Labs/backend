@@ -36,12 +36,22 @@ export type Amount = {
   timestamp: number;
 };
 
+export type JoinExit = {
+  valueUSD: string;
+  type: string;
+  timestamp: number;
+  tx: string;
+};
 export interface Pools {
   pools: Pool[];
 }
 
 export interface TokenMints {
   tokenMints: Amount[];
+}
+
+export interface JoinExits {
+  joinExits: JoinExit[];
 }
 
 export interface MapSlot {
