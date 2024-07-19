@@ -76,11 +76,15 @@ export class AppController {
 
   @Get('bitget-liquidity-check')
   async getBitgetLiquidity(@Query() query: { address: string }) {
-    const result = await this.rewardService.bitgetUsersLiquidity(
-      query.address.toLowerCase(),
-    );
+    try {
+      const result = await this.rewardService.bitgetUsersLiquidity(
+        query.address.toLowerCase(),
+      );
 
-    return result;
+      return result;
+    } catch {
+      return { status: 1, data: {}, message: 'Error' };
+    }
   }
 
   @Get('current-epochs')
