@@ -45,3 +45,14 @@ export const GET_TOTAL_ALLOCATION_PER_EPOCH = graphql(`
     }
   }
 `);
+
+export const GET_JOIN_EXITS_PER_ADDRESS = graphql(`
+  query GetJoinExitsPerAddressQuery($where: JoinExit_filter!) {
+    joinExits(where: $where, orderBy: timestamp, orderDirection: asc) {
+      valueUSD
+      type
+      timestamp
+      tx
+    }
+  }
+`);

@@ -74,6 +74,15 @@ export class AppController {
     return result;
   }
 
+  @Get('bitget-liquidity-check')
+  async getBitgetLiquidity(@Query() query: { address: string }) {
+    const result = await this.rewardService.bitgetUsersLiquidity(
+      query.address.toLowerCase(),
+    );
+
+    return result;
+  }
+
   @Get('current-epochs')
   async getCurrentEpochs() {
     const stakingEpoch = await this.rewardService.getStakingEpoch();
