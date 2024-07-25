@@ -65,6 +65,7 @@ export class OfficialPoolService {
   async calculateWeeklyLPThirdPartyRewardsDistribution(
     weeklyBlockNumbers: number[],
     incentivisedPools: string[],
+    nestedPools: string[],
     totalAllocation: string,
   ): Promise<string[][]> {
     const resultObject = {};
@@ -79,15 +80,22 @@ export class OfficialPoolService {
         },
       );
 
-      for (const incentivisedPool of subGraphPools.pools) {
+      const subGraphNestedPools: Pools = await this.qqlService.request(
+        GET_POOLS_QUERY,
+        {
+          where: { id_in: nestedPools },
+          blockNumber: blockNumber,
+        },
+      );
+      subGraphNestedPools.pools.push(...subGraphPools.pools);
+      for (const incentivisedPool of subGraphNestedPools.pools) {
         const result = await this.processPool(
           incentivisedPool.address,
           incentivisedPool.id,
           blockNumber,
-          subGraphPools.pools.length,
+          subGraphNestedPools.pools.length,
         );
-
-        resultObject[blockNumber][incentivisedPool.id] = result;
+        resultObject[blockNumber][incentivisedPool.address] = result;
       }
     }
 
@@ -105,15 +113,30 @@ export class OfficialPoolService {
     object: NestedObject,
   ): NestedObject {
     const result: NestedObject = {};
+    const nestedPoolAddress = '0x918ba1c86bcdcb92361dda941bd2491e45248b77';
+    const vaultAddress = '0x428aec7c1e0c9a52686774434a1d6de5134ac529';
+    let nestedPoolAmount = new Decimal(0);
 
     for (const blocknumber in object) {
       result[blocknumber] = {};
 
       for (const poolAddress in object[blocknumber] as NestedObject) {
         for (const lpAddress in object[blocknumber][poolAddress]) {
-          result[blocknumber][lpAddress] = (
-            (result[blocknumber][lpAddress] as Decimal) || new Decimal(0)
-          ).add(object[blocknumber][poolAddress][lpAddress]);
+          if (lpAddress == vaultAddress) {
+            nestedPoolAmount = nestedPoolAmount.add(
+              object[blocknumber][poolAddress][lpAddress],
+            );
+          } else if (poolAddress == nestedPoolAddress) {
+            const normalizedValue =
+              object[blocknumber][poolAddress][lpAddress].mul(nestedPoolAmount);
+            result[blocknumber][lpAddress] = (
+              (result[blocknumber][lpAddress] as Decimal) || new Decimal(0)
+            ).add(normalizedValue);
+          } else {
+            result[blocknumber][lpAddress] = (
+              (result[blocknumber][lpAddress] as Decimal) || new Decimal(0)
+            ).add(object[blocknumber][poolAddress][lpAddress]);
+          }
         }
       }
     }
@@ -135,7 +158,6 @@ export class OfficialPoolService {
 
     for (const key in object) {
       const innerDict = object[key];
-
       for (const address in innerDict as NestedObject) {
         if (!summedValues[address]) {
           summedValues[address] = new Decimal(0);
@@ -169,7 +191,7 @@ export class OfficialPoolService {
     officialPoolWeight: string,
     totalWeight: number,
   ) {
-    const shares = await this.fetchPoolShares(officialPoolId, blockNumber);
+    const { shares } = await this.fetchPoolShares(officialPoolId, blockNumber);
 
     return await this.processSharesPerOfficialPool({
       shares,
@@ -183,10 +205,11 @@ export class OfficialPoolService {
   private async fetchPoolShares(
     poolId: string,
     blockNumber: number,
-  ): Promise<PoolShare[]> {
+  ): Promise<{ shares: PoolShare[]; totalShares: string }> {
     const shares: PoolShare[] = [];
     let fetchFinished = false;
     let i = 0;
+    let totalShares = '0';
     while (!fetchFinished) {
       const subGraphPools: Pools = await this.qqlService.request(
         GET_POOLS_SHARES_QUERY,
@@ -196,16 +219,13 @@ export class OfficialPoolService {
           skip: i * 1000,
         },
       );
-      if (i == 1) {
-        console.log(subGraphPools.pools[0].shares);
-      }
       if (shares) shares.push(...subGraphPools.pools[0].shares);
 
       if (subGraphPools.pools[0].shares.length !== 1000) fetchFinished = true;
-
+      totalShares = subGraphPools.pools[0].totalShares.toString();
       ++i;
     }
-    return shares;
+    return { shares, totalShares: totalShares };
   }
 
   private async processPool(
@@ -214,13 +234,16 @@ export class OfficialPoolService {
     blockNumber: number,
     numberOfPools: number,
   ) {
-    const shares = await this.fetchPoolShares(officialPoolId, blockNumber);
+    const { shares, totalShares } = await this.fetchPoolShares(
+      officialPoolId,
+      blockNumber,
+    );
 
     return await this.processSharesPerPool({
       shares,
       blockNumber,
       poolAddress: officialPoolAddress,
-      numberOfPools,
+      totalShares,
     });
   }
 
@@ -228,26 +251,20 @@ export class OfficialPoolService {
     shares,
     blockNumber,
     poolAddress,
-    numberOfPools,
+    totalShares,
   }: {
-    shares: any[];
+    shares: PoolShare[];
     blockNumber: number;
     poolAddress: string;
-    numberOfPools: number;
+    totalShares: string;
   }): Promise<NestedObject> {
     const result = {};
     for (const share of shares) {
-      const lpShare = await this.getLpShare({
-        blockNumber,
-        poolAddress,
-        lpId: share.userAddress.id,
-      });
-
+      const lpShare = new Decimal(share.balance).div(totalShares);
       if (!result[share.userAddress.id]) {
         result[share.userAddress.id] = new Decimal(0);
       }
-      const lpShareNormalizedByWeightsAndNumberOfPools =
-        lpShare.div(numberOfPools);
+      const lpShareNormalizedByWeightsAndNumberOfPools = lpShare;
 
       result[share.userAddress.id] = result[share.userAddress.id].add(
         lpShareNormalizedByWeightsAndNumberOfPools,

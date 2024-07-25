@@ -1840,6 +1840,183 @@ export enum OrderDirection {
   Desc = 'desc'
 }
 
+export type PartnersMerkleTree = {
+  __typename?: 'PartnersMerkleTree';
+  id: Scalars['ID']['output'];
+  merkleTree: Scalars['Bytes']['output'];
+};
+
+export type PartnersMerkleTree_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<PartnersMerkleTree_Filter>>>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  merkleTree?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  merkleTree_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_not?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  merkleTree_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  or?: InputMaybe<Array<InputMaybe<PartnersMerkleTree_Filter>>>;
+};
+
+export enum PartnersMerkleTree_OrderBy {
+  Id = 'id',
+  MerkleTree = 'merkleTree'
+}
+
+export type PartnersRewardDistributionSnapshot = {
+  __typename?: 'PartnersRewardDistributionSnapshot';
+  blockNumber: Scalars['BigInt']['output'];
+  blockTimestamp: Scalars['BigInt']['output'];
+  id: Scalars['ID']['output'];
+  ipfsCid: Scalars['String']['output'];
+  ipfsData?: Maybe<UserPartnersRewardDistributionMetaData>;
+  ipfsMerkleTree?: Maybe<PartnersMerkleTree>;
+  tokenAddress: Scalars['Bytes']['output'];
+  tokenAmount: Scalars['BigInt']['output'];
+};
+
+export type PartnersRewardDistributionSnapshot_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<PartnersRewardDistributionSnapshot_Filter>>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockTimestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockTimestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  blockTimestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  ipfsCid?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_contains?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_gt?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_gte?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ipfsCid_lt?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_lte?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_not?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_not_contains?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ipfsCid_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsData?: InputMaybe<Scalars['String']['input']>;
+  ipfsData_?: InputMaybe<UserPartnersRewardDistributionMetaData_Filter>;
+  ipfsData_contains?: InputMaybe<Scalars['String']['input']>;
+  ipfsData_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsData_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsData_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsData_gt?: InputMaybe<Scalars['String']['input']>;
+  ipfsData_gte?: InputMaybe<Scalars['String']['input']>;
+  ipfsData_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ipfsData_lt?: InputMaybe<Scalars['String']['input']>;
+  ipfsData_lte?: InputMaybe<Scalars['String']['input']>;
+  ipfsData_not?: InputMaybe<Scalars['String']['input']>;
+  ipfsData_not_contains?: InputMaybe<Scalars['String']['input']>;
+  ipfsData_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsData_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsData_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsData_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ipfsData_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsData_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsData_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsData_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_?: InputMaybe<PartnersMerkleTree_Filter>;
+  ipfsMerkleTree_contains?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_gt?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_gte?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ipfsMerkleTree_lt?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_lte?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_contains?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ipfsMerkleTree_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsMerkleTree_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  or?: InputMaybe<Array<InputMaybe<PartnersRewardDistributionSnapshot_Filter>>>;
+  tokenAddress?: InputMaybe<Scalars['Bytes']['input']>;
+  tokenAddress_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  tokenAddress_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  tokenAddress_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  tokenAddress_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  tokenAddress_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  tokenAddress_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  tokenAddress_not?: InputMaybe<Scalars['Bytes']['input']>;
+  tokenAddress_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  tokenAddress_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  tokenAmount?: InputMaybe<Scalars['BigInt']['input']>;
+  tokenAmount_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  tokenAmount_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  tokenAmount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  tokenAmount_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  tokenAmount_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  tokenAmount_not?: InputMaybe<Scalars['BigInt']['input']>;
+  tokenAmount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+};
+
+export enum PartnersRewardDistributionSnapshot_OrderBy {
+  BlockNumber = 'blockNumber',
+  BlockTimestamp = 'blockTimestamp',
+  Id = 'id',
+  IpfsCid = 'ipfsCid',
+  IpfsData = 'ipfsData',
+  IpfsDataAddress = 'ipfsData__address',
+  IpfsDataEpoch = 'ipfsData__epoch',
+  IpfsDataId = 'ipfsData__id',
+  IpfsDataIpfsCid = 'ipfsData__ipfsCid',
+  IpfsDataValue = 'ipfsData__value',
+  IpfsMerkleTree = 'ipfsMerkleTree',
+  IpfsMerkleTreeId = 'ipfsMerkleTree__id',
+  IpfsMerkleTreeMerkleTree = 'ipfsMerkleTree__merkleTree',
+  TokenAddress = 'tokenAddress',
+  TokenAmount = 'tokenAmount'
+}
+
 export type Pool = {
   __typename?: 'Pool';
   address: Scalars['Bytes']['output'];
@@ -4020,6 +4197,10 @@ export type Query = {
   managementOperations: Array<ManagementOperation>;
   minter?: Maybe<Minter>;
   minters: Array<Minter>;
+  partnersMerkleTree?: Maybe<PartnersMerkleTree>;
+  partnersMerkleTrees: Array<PartnersMerkleTree>;
+  partnersRewardDistributionSnapshot?: Maybe<PartnersRewardDistributionSnapshot>;
+  partnersRewardDistributionSnapshots: Array<PartnersRewardDistributionSnapshot>;
   pool?: Maybe<Pool>;
   poolContract?: Maybe<PoolContract>;
   poolContracts: Array<PoolContract>;
@@ -4065,12 +4246,16 @@ export type Query = {
   user?: Maybe<User>;
   userClaimedLPRewardDistribution?: Maybe<UserClaimedLpRewardDistribution>;
   userClaimedLPRewardDistributions: Array<UserClaimedLpRewardDistribution>;
+  userClaimedPartnersRewardDistribution?: Maybe<UserClaimedPartnersRewardDistribution>;
+  userClaimedPartnersRewardDistributions: Array<UserClaimedPartnersRewardDistribution>;
   userClaimedStakingRewardDistribution?: Maybe<UserClaimedStakingRewardDistribution>;
   userClaimedStakingRewardDistributions: Array<UserClaimedStakingRewardDistribution>;
   userInternalBalance?: Maybe<UserInternalBalance>;
   userInternalBalances: Array<UserInternalBalance>;
   userLPRewardDistributionMetaData?: Maybe<UserLpRewardDistributionMetaData>;
   userLPRewardDistributionMetaDatas: Array<UserLpRewardDistributionMetaData>;
+  userPartnersRewardDistributionMetaData?: Maybe<UserPartnersRewardDistributionMetaData>;
+  userPartnersRewardDistributionMetaDatas: Array<UserPartnersRewardDistributionMetaData>;
   userStakingRewardDistributionMetaData?: Maybe<UserStakingRewardDistributionMetaData>;
   userStakingRewardDistributionMetaDatas: Array<UserStakingRewardDistributionMetaData>;
   users: Array<User>;
@@ -4339,6 +4524,42 @@ export type QueryMintersArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Minter_Filter>;
+};
+
+
+export type QueryPartnersMerkleTreeArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryPartnersMerkleTreesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<PartnersMerkleTree_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<PartnersMerkleTree_Filter>;
+};
+
+
+export type QueryPartnersRewardDistributionSnapshotArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryPartnersRewardDistributionSnapshotsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<PartnersRewardDistributionSnapshot_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<PartnersRewardDistributionSnapshot_Filter>;
 };
 
 
@@ -4745,6 +4966,24 @@ export type QueryUserClaimedLpRewardDistributionsArgs = {
 };
 
 
+export type QueryUserClaimedPartnersRewardDistributionArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryUserClaimedPartnersRewardDistributionsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<UserClaimedPartnersRewardDistribution_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<UserClaimedPartnersRewardDistribution_Filter>;
+};
+
+
 export type QueryUserClaimedStakingRewardDistributionArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
@@ -4796,6 +5035,24 @@ export type QueryUserLpRewardDistributionMetaDatasArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<UserLpRewardDistributionMetaData_Filter>;
+};
+
+
+export type QueryUserPartnersRewardDistributionMetaDataArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryUserPartnersRewardDistributionMetaDatasArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<UserPartnersRewardDistributionMetaData_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<UserPartnersRewardDistributionMetaData_Filter>;
 };
 
 
@@ -5086,6 +5343,10 @@ export type Subscription = {
   managementOperations: Array<ManagementOperation>;
   minter?: Maybe<Minter>;
   minters: Array<Minter>;
+  partnersMerkleTree?: Maybe<PartnersMerkleTree>;
+  partnersMerkleTrees: Array<PartnersMerkleTree>;
+  partnersRewardDistributionSnapshot?: Maybe<PartnersRewardDistributionSnapshot>;
+  partnersRewardDistributionSnapshots: Array<PartnersRewardDistributionSnapshot>;
   pool?: Maybe<Pool>;
   poolContract?: Maybe<PoolContract>;
   poolContracts: Array<PoolContract>;
@@ -5131,12 +5392,16 @@ export type Subscription = {
   user?: Maybe<User>;
   userClaimedLPRewardDistribution?: Maybe<UserClaimedLpRewardDistribution>;
   userClaimedLPRewardDistributions: Array<UserClaimedLpRewardDistribution>;
+  userClaimedPartnersRewardDistribution?: Maybe<UserClaimedPartnersRewardDistribution>;
+  userClaimedPartnersRewardDistributions: Array<UserClaimedPartnersRewardDistribution>;
   userClaimedStakingRewardDistribution?: Maybe<UserClaimedStakingRewardDistribution>;
   userClaimedStakingRewardDistributions: Array<UserClaimedStakingRewardDistribution>;
   userInternalBalance?: Maybe<UserInternalBalance>;
   userInternalBalances: Array<UserInternalBalance>;
   userLPRewardDistributionMetaData?: Maybe<UserLpRewardDistributionMetaData>;
   userLPRewardDistributionMetaDatas: Array<UserLpRewardDistributionMetaData>;
+  userPartnersRewardDistributionMetaData?: Maybe<UserPartnersRewardDistributionMetaData>;
+  userPartnersRewardDistributionMetaDatas: Array<UserPartnersRewardDistributionMetaData>;
   userStakingRewardDistributionMetaData?: Maybe<UserStakingRewardDistributionMetaData>;
   userStakingRewardDistributionMetaDatas: Array<UserStakingRewardDistributionMetaData>;
   users: Array<User>;
@@ -5405,6 +5670,42 @@ export type SubscriptionMintersArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<Minter_Filter>;
+};
+
+
+export type SubscriptionPartnersMerkleTreeArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionPartnersMerkleTreesArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<PartnersMerkleTree_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<PartnersMerkleTree_Filter>;
+};
+
+
+export type SubscriptionPartnersRewardDistributionSnapshotArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionPartnersRewardDistributionSnapshotsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<PartnersRewardDistributionSnapshot_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<PartnersRewardDistributionSnapshot_Filter>;
 };
 
 
@@ -5811,6 +6112,24 @@ export type SubscriptionUserClaimedLpRewardDistributionsArgs = {
 };
 
 
+export type SubscriptionUserClaimedPartnersRewardDistributionArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionUserClaimedPartnersRewardDistributionsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<UserClaimedPartnersRewardDistribution_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<UserClaimedPartnersRewardDistribution_Filter>;
+};
+
+
 export type SubscriptionUserClaimedStakingRewardDistributionArgs = {
   block?: InputMaybe<Block_Height>;
   id: Scalars['ID']['input'];
@@ -5862,6 +6181,24 @@ export type SubscriptionUserLpRewardDistributionMetaDatasArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<UserLpRewardDistributionMetaData_Filter>;
+};
+
+
+export type SubscriptionUserPartnersRewardDistributionMetaDataArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID']['input'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionUserPartnersRewardDistributionMetaDatasArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<UserPartnersRewardDistributionMetaData_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<UserPartnersRewardDistributionMetaData_Filter>;
 };
 
 
@@ -7551,6 +7888,38 @@ export enum UserClaimedLpRewardDistribution_OrderBy {
   TotalAmountOfClaimedToken = 'totalAmountOfClaimedToken'
 }
 
+export type UserClaimedPartnersRewardDistribution = {
+  __typename?: 'UserClaimedPartnersRewardDistribution';
+  id: Scalars['ID']['output'];
+  snapshots: Array<Scalars['BigInt']['output']>;
+};
+
+export type UserClaimedPartnersRewardDistribution_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<UserClaimedPartnersRewardDistribution_Filter>>>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  or?: InputMaybe<Array<InputMaybe<UserClaimedPartnersRewardDistribution_Filter>>>;
+  snapshots?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  snapshots_contains?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  snapshots_contains_nocase?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  snapshots_not?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  snapshots_not_contains?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  snapshots_not_contains_nocase?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+};
+
+export enum UserClaimedPartnersRewardDistribution_OrderBy {
+  Id = 'id',
+  Snapshots = 'snapshots'
+}
+
 export type UserClaimedStakingRewardDistribution = {
   __typename?: 'UserClaimedStakingRewardDistribution';
   claimedTokens: Array<TokenClaimed>;
@@ -7773,6 +8142,84 @@ export type UserLpRewardDistributionMetaData_Filter = {
 };
 
 export enum UserLpRewardDistributionMetaData_OrderBy {
+  Address = 'address',
+  Epoch = 'epoch',
+  Id = 'id',
+  IpfsCid = 'ipfsCid',
+  Value = 'value'
+}
+
+export type UserPartnersRewardDistributionMetaData = {
+  __typename?: 'UserPartnersRewardDistributionMetaData';
+  address: Scalars['Bytes']['output'];
+  epoch: Scalars['BigInt']['output'];
+  id: Scalars['ID']['output'];
+  ipfsCid: Scalars['String']['output'];
+  value: Scalars['BigInt']['output'];
+};
+
+export type UserPartnersRewardDistributionMetaData_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  address?: InputMaybe<Scalars['Bytes']['input']>;
+  address_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  address_gt?: InputMaybe<Scalars['Bytes']['input']>;
+  address_gte?: InputMaybe<Scalars['Bytes']['input']>;
+  address_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  address_lt?: InputMaybe<Scalars['Bytes']['input']>;
+  address_lte?: InputMaybe<Scalars['Bytes']['input']>;
+  address_not?: InputMaybe<Scalars['Bytes']['input']>;
+  address_not_contains?: InputMaybe<Scalars['Bytes']['input']>;
+  address_not_in?: InputMaybe<Array<Scalars['Bytes']['input']>>;
+  and?: InputMaybe<Array<InputMaybe<UserPartnersRewardDistributionMetaData_Filter>>>;
+  epoch?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  epoch_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_not?: InputMaybe<Scalars['BigInt']['input']>;
+  epoch_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  ipfsCid?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_contains?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_gt?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_gte?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ipfsCid_lt?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_lte?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_not?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_not_contains?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ipfsCid_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ipfsCid_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  or?: InputMaybe<Array<InputMaybe<UserPartnersRewardDistributionMetaData_Filter>>>;
+  value?: InputMaybe<Scalars['BigInt']['input']>;
+  value_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  value_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  value_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  value_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  value_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  value_not?: InputMaybe<Scalars['BigInt']['input']>;
+  value_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+};
+
+export enum UserPartnersRewardDistributionMetaData_OrderBy {
   Address = 'address',
   Epoch = 'epoch',
   Id = 'id',
@@ -8158,7 +8605,7 @@ export type GetPoolsSharesQueryQueryVariables = Exact<{
 }>;
 
 
-export type GetPoolsSharesQueryQuery = { __typename?: 'Query', pools: Array<{ __typename?: 'Pool', totalShares: any, shares?: Array<{ __typename?: 'PoolShare', userAddress: { __typename?: 'User', id: string } }> | null }> };
+export type GetPoolsSharesQueryQuery = { __typename?: 'Query', pools: Array<{ __typename?: 'Pool', totalShares: any, shares?: Array<{ __typename?: 'PoolShare', balance: any, userAddress: { __typename?: 'User', id: string } }> | null }> };
 
 export type GetTotalAlocationPerEpochQueryQueryVariables = Exact<{
   where: TokenMint_Filter;
@@ -8176,6 +8623,6 @@ export type GetJoinExitsPerAddressQueryQuery = { __typename?: 'Query', joinExits
 
 
 export const GetPoolsQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPoolsQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Pool_filter"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"blockNumber"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pools"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"createTime"}},{"kind":"Argument","name":{"kind":"Name","value":"orderDirection"},"value":{"kind":"EnumValue","value":"asc"}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"block"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"number"},"value":{"kind":"Variable","name":{"kind":"Name","value":"blockNumber"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"officialPoolWeight"}}]}}]}}]} as unknown as DocumentNode<GetPoolsQueryQuery, GetPoolsQueryQueryVariables>;
-export const GetPoolsSharesQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPoolsSharesQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Pool_filter"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"blockNumber"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"skip"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pools"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"createTime"}},{"kind":"Argument","name":{"kind":"Name","value":"orderDirection"},"value":{"kind":"EnumValue","value":"asc"}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"block"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"number"},"value":{"kind":"Variable","name":{"kind":"Name","value":"blockNumber"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"shares"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1000"}},{"kind":"Argument","name":{"kind":"Name","value":"skip"},"value":{"kind":"Variable","name":{"kind":"Name","value":"skip"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"balance"}},{"kind":"Argument","name":{"kind":"Name","value":"orderDirection"},"value":{"kind":"EnumValue","value":"desc"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userAddress"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalShares"}}]}}]}}]} as unknown as DocumentNode<GetPoolsSharesQueryQuery, GetPoolsSharesQueryQueryVariables>;
+export const GetPoolsSharesQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPoolsSharesQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Pool_filter"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"blockNumber"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"skip"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pools"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"createTime"}},{"kind":"Argument","name":{"kind":"Name","value":"orderDirection"},"value":{"kind":"EnumValue","value":"asc"}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"block"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"number"},"value":{"kind":"Variable","name":{"kind":"Name","value":"blockNumber"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"shares"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1000"}},{"kind":"Argument","name":{"kind":"Name","value":"skip"},"value":{"kind":"Variable","name":{"kind":"Name","value":"skip"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"balance"}},{"kind":"Argument","name":{"kind":"Name","value":"orderDirection"},"value":{"kind":"EnumValue","value":"desc"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userAddress"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"balance"}}]}},{"kind":"Field","name":{"kind":"Name","value":"totalShares"}}]}}]}}]} as unknown as DocumentNode<GetPoolsSharesQueryQuery, GetPoolsSharesQueryQueryVariables>;
 export const GetTotalAlocationPerEpochQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTotalAlocationPerEpochQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TokenMint_filter"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tokenMints"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"timestamp"}}]}}]}}]} as unknown as DocumentNode<GetTotalAlocationPerEpochQueryQuery, GetTotalAlocationPerEpochQueryQueryVariables>;
 export const GetJoinExitsPerAddressQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetJoinExitsPerAddressQuery"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"JoinExit_filter"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"joinExits"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"timestamp"}},{"kind":"Argument","name":{"kind":"Name","value":"orderDirection"},"value":{"kind":"EnumValue","value":"asc"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"valueUSD"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"timestamp"}},{"kind":"Field","name":{"kind":"Name","value":"tx"}}]}}]}}]} as unknown as DocumentNode<GetJoinExitsPerAddressQueryQuery, GetJoinExitsPerAddressQueryQueryVariables>;

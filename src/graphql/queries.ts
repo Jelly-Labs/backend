@@ -31,6 +31,7 @@ export const GET_POOLS_SHARES_QUERY = graphql(`
         userAddress {
           id
         }
+        balance
       }
       totalShares
     }
