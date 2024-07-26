@@ -24,7 +24,7 @@ export class RewardService {
     private readonly sesService: SesService,
   ) {}
 
-  async weeklyLPRewardsDistributionSnapshotPost(epoch = '0') {
+  async weeklyLPRewardsDistributionSnapshot(epoch = '0') {
     const content =
       await this.weeklyLPRewardsDistributionSnapshotIPFSData(epoch);
 
@@ -36,45 +36,44 @@ export class RewardService {
       this.logger.debug(
         `ipfsHah: ${ipfsHash}, merkleeTreeRoot: ${content.merkleTreeRoot}`,
       );
-      // return;
-      this.logger.debug('call Governance contract to create proposal...');
-      const createEpochFunctionCalldata = this.ethersService
-        .getLPDistributionSmartContract()
-        .interface.encodeFunctionData('createEpoch', [
-          content.merkleTreeRoot,
-          ipfsHash,
-        ]);
-      this.logger.debug(
-        'createEpochFunctionCalldata: ',
-        createEpochFunctionCalldata,
-      );
-      const proposalDescription =
-        'LP Reward Distribution for epoch: ' +
-        epoch +
-        ' and ipfs hash: ' +
-        ipfsHash;
-      this.logger.debug('proposalDescription: ', proposalDescription);
-
-      const transactionRequest = await this.ethersService
-        .getGovernanceSmartContract()
-        .proposeCustom(
-          [this.ethersService.getLPDistributionSmartContract().address],
-          [0],
-          [createEpochFunctionCalldata],
-          proposalDescription,
-          '3600',
-          '86400',
-        );
-
-      this.logger.debug(
-        'transaction successfully submitted ' + transactionRequest.hash,
-      );
-      const receipt = await transactionRequest.wait();
-      this.logger.debug(
-        'transaction accepted by the network ' + transactionRequest.hash,
-      );
-      return receipt;
+      return;
     }
+  }
+
+  async weeklyLPRewardsDistributionSnapshotPost(
+    merkleTreeRoot = '',
+    ipfsHash = '',
+    proposalDescription = '',
+  ) {
+    this.logger.debug('call Governance contract to create proposal...');
+    const createEpochFunctionCalldata = this.ethersService
+      .getLPDistributionSmartContract()
+      .interface.encodeFunctionData('createEpoch', [merkleTreeRoot, ipfsHash]);
+    this.logger.debug(
+      'createEpochFunctionCalldata: ',
+      createEpochFunctionCalldata,
+    );
+    this.logger.debug('proposalDescription: ', proposalDescription);
+    // return;
+    const transactionRequest = await this.ethersService
+      .getGovernanceSmartContract()
+      .proposeCustom(
+        [this.ethersService.getLPDistributionSmartContract().address],
+        [0],
+        [createEpochFunctionCalldata],
+        proposalDescription,
+        '3600',
+        '86400',
+      );
+
+    this.logger.debug(
+      'transaction successfully submitted ' + transactionRequest.hash,
+    );
+    const receipt = await transactionRequest.wait();
+    this.logger.debug(
+      'transaction accepted by the network ' + transactionRequest.hash,
+    );
+    return receipt;
   }
 
   async weeklyLPRewardsDistributionSnapshotIPFSData(epoch = '0', email = '') {
@@ -180,7 +179,7 @@ export class RewardService {
     return receipt;
   }
 
-  async weeklyStakingRewardsDistributionSnapshotPost(epoch = '0') {
+  async weeklyStakingRewardsDistributionSnapshot(epoch = '0') {
     const content =
       await this.weeklyStakingRewardsDistributionSnapshotIPFSData(epoch);
     if (content) {
@@ -191,44 +190,43 @@ export class RewardService {
       this.logger.debug(
         `ipfsHah: ${ipfsHash}, merkleeTreeRoot: ${content.merkleTreeRoot}`,
       );
-      this.logger.debug('call Governance contract to create proposal...');
-
-      const createEpochFunctionCalldata = this.ethersService
-        .getStakingDistributionSmartContract()
-        .interface.encodeFunctionData('createEpoch', [
-          content.merkleTreeRoot,
-          ipfsHash,
-        ]);
-      this.logger.debug(
-        'createEpochFunctionCalldata: ',
-        createEpochFunctionCalldata,
-      );
-      const proposalDescription =
-        'Staking Reward Distribution for epoch: ' +
-        epoch +
-        ' and ipfs hash: ' +
-        ipfsHash;
-      this.logger.debug('proposalDescription: ', proposalDescription);
-      const transactionRequest = await this.ethersService
-        .getGovernanceSmartContract()
-        .proposeCustom(
-          [this.ethersService.getStakingDistributionSmartContract().address],
-          [0],
-          [createEpochFunctionCalldata],
-          proposalDescription,
-          '3600',
-          '86400',
-        );
-
-      this.logger.debug(
-        'transaction successfully submitted ' + transactionRequest.hash,
-      );
-      const receipt = await transactionRequest.wait();
-      this.logger.debug(
-        'transaction accepted by the network ' + transactionRequest.hash,
-      );
-      return receipt;
+      return;
     }
+  }
+
+  async weeklyStakingRewardsDistributionSnapshotPost(
+    merkleTreeRoot = '',
+    ipfsHash = '',
+    proposalDescription = '',
+  ) {
+    const createEpochFunctionCalldata = this.ethersService
+      .getStakingDistributionSmartContract()
+      .interface.encodeFunctionData('createEpoch', [merkleTreeRoot, ipfsHash]);
+    this.logger.debug(
+      'createEpochFunctionCalldata: ',
+      createEpochFunctionCalldata,
+    );
+    this.logger.debug('proposalDescription: ', proposalDescription);
+    // return;
+    const transactionRequest = await this.ethersService
+      .getGovernanceSmartContract()
+      .proposeCustom(
+        [this.ethersService.getStakingDistributionSmartContract().address],
+        [0],
+        [createEpochFunctionCalldata],
+        proposalDescription,
+        '3600',
+        '86400',
+      );
+
+    this.logger.debug(
+      'transaction successfully submitted ' + transactionRequest.hash,
+    );
+    const receipt = await transactionRequest.wait();
+    this.logger.debug(
+      'transaction accepted by the network ' + transactionRequest.hash,
+    );
+    return receipt;
   }
 
   async weeklyStakingRewardsDistributionSnapshotIPFSData(
@@ -423,18 +421,13 @@ export class RewardService {
       },
     );
     let total = new Decimal(0);
-    // const tenDaysInSeconds = 864000;
-    // let startTimestamp = 0;
     for (let i = 0; i < joinsAndExits.joinExits.length; i++) {
       const element = joinsAndExits.joinExits[i];
-      console.log(element);
       if (element.type == 'Join') {
         total = total.add(element.valueUSD);
-        // if (startTimestamp == 0) startTimestamp = element.timestamp;
       } else {
         total = total.sub(element.valueUSD);
       }
-      console.log(total.toNumber());
       if (total.toNumber() > 20) {
         return {
           status: 0,
@@ -445,50 +438,71 @@ export class RewardService {
     return { status: 1, data: {} };
   }
 
-  async weeklyLPThirdPartyRewardsDistributionSnapshotPost(
+  async weeklyLPThirdPartyRewardsDistributionSnapshot(
     epoch = '0',
-    token = '0x0',
     tokenAmount = '0',
     incentivisedPool = [],
+    nestedPools = [],
   ) {
     const content =
       await this.weeklyLPThirdPartyRewardsDistributionSnapshotIPFSData(
         epoch,
         tokenAmount,
         incentivisedPool,
+        nestedPools,
       );
 
     if (content) {
       this.logger.debug('start sending merklee tree to the ipfs...');
 
       const ipfsHash = await this.ipfs.upload(content);
-
-      this.logger.debug(
-        `ipfsHah: ${ipfsHash}, merkleeTreeRoot: ${content.merkleTreeRoot}`,
-      );
-      this.logger.debug('call to create Third Party incentives...');
-      // return;
-      const createThridPartyDistribution = this.ethersService
-        .getLPThirdPartyDistributionSmartContract()
-        .createDrop(token, tokenAmount, content.merkleTreeRoot, ipfsHash);
-
-      this.logger.debug(
-        'transaction successfully submitted ' +
-          createThridPartyDistribution.hash,
-      );
-      const receipt = await createThridPartyDistribution.wait();
-      this.logger.debug(
-        'transaction accepted by the network ' +
-          createThridPartyDistribution.hash,
-      );
-      return receipt;
+      const returnValue = `ipfsHah: ${ipfsHash}, merkleeTreeRoot: ${content.merkleTreeRoot}`;
+      this.logger.debug(returnValue);
+      return returnValue;
     }
   }
+  async weeklyLPThirdPartyRewardsDistributionSnapshotPost(
+    token = '0x0',
+    tokenAmount = '0',
+    ipfsHash = '',
+    merkleTreeRoot = '',
+  ) {
+    this.logger.debug('call to create Third Party incentives...');
+    const createThridPartyDistribution = this.ethersService
+      .getLPThirdPartyDistributionSmartContract()
+      .createDrop(token, tokenAmount, merkleTreeRoot, ipfsHash);
 
+    this.logger.debug(
+      'transaction successfully submitted ' + createThridPartyDistribution.hash,
+    );
+    const receipt = await createThridPartyDistribution.wait();
+    this.logger.debug(
+      'transaction accepted by the network ' +
+        createThridPartyDistribution.hash,
+    );
+    return receipt;
+  }
+
+  async generateMerkleeTree(tree: string[][]) {
+    console.log(tree);
+    const treee = [
+      ['0x9342a65736a2e9c6a84a2adaba55ad1dc1f3a418', '500000000000000000'],
+      ['0xa1Ce0aB959766cEC4d768ECD19bCD53A3BaB2296', '500000000000000000'],
+      ['0xdd71c71d7E0806b46E5008C09a000382188842F5', '500000000000000000'],
+    ];
+    const { content } = this.ipfs.generateIpfsContent(treee, [1], 'Test', '0');
+
+    const ipfsHash = await this.ipfs.upload(content);
+
+    this.logger.debug(
+      `ipfsHah: ${ipfsHash}, merkleeTreeRoot: ${content.merkleTreeRoot}`,
+    );
+  }
   async weeklyLPThirdPartyRewardsDistributionSnapshotIPFSData(
     epoch = '0',
     tokenAmount = '0',
     incentivisedPools: string[] = [],
+    nestedPools: string[] = [],
   ) {
     this.logger.debug('get epoch daily block numbers...');
     const weeklyBlockNumbers = await this.getEpochSnapshots(epoch);
@@ -499,6 +513,7 @@ export class RewardService {
       await this.officialPoolService.calculateWeeklyLPThirdPartyRewardsDistribution(
         weeklyBlockNumbers,
         incentivisedPools,
+        nestedPools,
         tokenAmount,
       );
 
@@ -512,7 +527,7 @@ export class RewardService {
         'LP Third Party Reward Distribution',
         epoch,
       );
-
+      // console.log(JSON.stringify(content.merkleTree.values));
       return content;
     } else {
       this.logger.debug('could not generate ipfs content');
