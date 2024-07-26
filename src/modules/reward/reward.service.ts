@@ -421,18 +421,13 @@ export class RewardService {
       },
     );
     let total = new Decimal(0);
-    // const tenDaysInSeconds = 864000;
-    // let startTimestamp = 0;
     for (let i = 0; i < joinsAndExits.joinExits.length; i++) {
       const element = joinsAndExits.joinExits[i];
-      // console.log(element);
       if (element.type == 'Join') {
         total = total.add(element.valueUSD);
-        // if (startTimestamp == 0) startTimestamp = element.timestamp;
       } else {
         total = total.sub(element.valueUSD);
       }
-      // console.log(total.toNumber());
       if (total.toNumber() > 20) {
         return {
           status: 0,
@@ -510,9 +505,7 @@ export class RewardService {
     nestedPools: string[] = [],
   ) {
     this.logger.debug('get epoch daily block numbers...');
-    const weeklyBlockNumbers = [
-      (await this.ethersService.getBlockNumber()) - 1000,
-    ];
+    const weeklyBlockNumbers = await this.getEpochSnapshots(epoch);
     this.logger.debug('done getting epoch daily block numbers...');
     this.logger.debug('started calculating process...');
 
