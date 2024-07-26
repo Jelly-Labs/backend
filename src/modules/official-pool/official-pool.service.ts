@@ -69,6 +69,7 @@ export class OfficialPoolService {
     totalAllocation: string,
   ): Promise<string[][]> {
     const resultObject = {};
+    let nestedPoolAddress = '';
     for (const blockNumber of weeklyBlockNumbers) {
       resultObject[blockNumber] = {};
 
@@ -87,19 +88,18 @@ export class OfficialPoolService {
           blockNumber: blockNumber,
         },
       );
-      subGraphNestedPools.pools.push(...subGraphPools.pools);
-      for (const incentivisedPool of subGraphNestedPools.pools) {
-        const result = await this.processPool(
-          incentivisedPool.address,
-          incentivisedPool.id,
-          blockNumber,
-          subGraphNestedPools.pools.length,
-        );
+      nestedPoolAddress = subGraphNestedPools.pools[0].address;
+      subGraphPools.pools.push(...subGraphNestedPools.pools);
+      for (const incentivisedPool of subGraphPools.pools) {
+        const result = await this.processPool(incentivisedPool.id, blockNumber);
         resultObject[blockNumber][incentivisedPool.address] = result;
       }
     }
 
-    const sumAllLp = this.sumAllLpPercentInPoolPerBlockNumber(resultObject);
+    const sumAllLp = this.sumAllLpPercentInPoolPerBlockNumberWithNesting(
+      resultObject,
+      nestedPoolAddress,
+    );
 
     return this.sumAllLpPercent(sumAllLp, totalAllocation);
   }
@@ -113,7 +113,32 @@ export class OfficialPoolService {
     object: NestedObject,
   ): NestedObject {
     const result: NestedObject = {};
-    const nestedPoolAddress = '0x918ba1c86bcdcb92361dda941bd2491e45248b77';
+    for (const blocknumber in object) {
+      result[blocknumber] = {};
+
+      for (const poolAddress in object[blocknumber] as NestedObject) {
+        for (const lpAddress in object[blocknumber][poolAddress]) {
+          result[blocknumber][lpAddress] = (
+            (result[blocknumber][lpAddress] as Decimal) || new Decimal(0)
+          ).add(object[blocknumber][poolAddress][lpAddress]);
+        }
+      }
+    }
+
+    return result;
+  }
+
+  /**
+   * Sums up all LP (Liquidity Provider) percentages within each pool for each block number.
+   *
+   * @param {NestedObject} object - An object containing nested data representing LP percentages for each pool and block number.
+   * @returns {NestedObject} - An object containing summed LP percentages within each pool for each block number.
+   */
+  private sumAllLpPercentInPoolPerBlockNumberWithNesting(
+    object: NestedObject,
+    nestedPoolAddress: string,
+  ): NestedObject {
+    const result: NestedObject = {};
     const vaultAddress = '0x428aec7c1e0c9a52686774434a1d6de5134ac529';
     let nestedPoolAmount = new Decimal(0);
 
@@ -228,12 +253,7 @@ export class OfficialPoolService {
     return { shares, totalShares: totalShares };
   }
 
-  private async processPool(
-    officialPoolAddress: string,
-    officialPoolId: string,
-    blockNumber: number,
-    numberOfPools: number,
-  ) {
+  private async processPool(officialPoolId: string, blockNumber: number) {
     const { shares, totalShares } = await this.fetchPoolShares(
       officialPoolId,
       blockNumber,
@@ -241,21 +261,15 @@ export class OfficialPoolService {
 
     return await this.processSharesPerPool({
       shares,
-      blockNumber,
-      poolAddress: officialPoolAddress,
       totalShares,
     });
   }
 
   private async processSharesPerPool({
     shares,
-    blockNumber,
-    poolAddress,
     totalShares,
   }: {
     shares: PoolShare[];
-    blockNumber: number;
-    poolAddress: string;
     totalShares: string;
   }): Promise<NestedObject> {
     const result = {};

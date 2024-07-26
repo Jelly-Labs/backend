@@ -425,14 +425,14 @@ export class RewardService {
     // let startTimestamp = 0;
     for (let i = 0; i < joinsAndExits.joinExits.length; i++) {
       const element = joinsAndExits.joinExits[i];
-      console.log(element);
+      // console.log(element);
       if (element.type == 'Join') {
         total = total.add(element.valueUSD);
         // if (startTimestamp == 0) startTimestamp = element.timestamp;
       } else {
         total = total.sub(element.valueUSD);
       }
-      console.log(total.toNumber());
+      // console.log(total.toNumber());
       if (total.toNumber() > 20) {
         return {
           status: 0,
@@ -443,9 +443,8 @@ export class RewardService {
     return { status: 1, data: {} };
   }
 
-  async weeklyLPThirdPartyRewardsDistributionSnapshotPost(
+  async weeklyLPThirdPartyRewardsDistributionSnapshot(
     epoch = '0',
-    token = '0x0',
     tokenAmount = '0',
     incentivisedPool = [],
     nestedPools = [],
@@ -462,28 +461,33 @@ export class RewardService {
       this.logger.debug('start sending merklee tree to the ipfs...');
 
       const ipfsHash = await this.ipfs.upload(content);
-
-      this.logger.debug(
-        `ipfsHah: ${ipfsHash}, merkleeTreeRoot: ${content.merkleTreeRoot}`,
-      );
-      this.logger.debug('call to create Third Party incentives...');
-      // return;
-      const createThridPartyDistribution = this.ethersService
-        .getLPThirdPartyDistributionSmartContract()
-        .createDrop(token, tokenAmount, content.merkleTreeRoot, ipfsHash);
-
-      this.logger.debug(
-        'transaction successfully submitted ' +
-          createThridPartyDistribution.hash,
-      );
-      const receipt = await createThridPartyDistribution.wait();
-      this.logger.debug(
-        'transaction accepted by the network ' +
-          createThridPartyDistribution.hash,
-      );
-      return receipt;
+      const returnValue = `ipfsHah: ${ipfsHash}, merkleeTreeRoot: ${content.merkleTreeRoot}`;
+      this.logger.debug(returnValue);
+      return returnValue;
     }
   }
+  async weeklyLPThirdPartyRewardsDistributionSnapshotPost(
+    token = '0x0',
+    tokenAmount = '0',
+    ipfsHash = '',
+    merkleTreeRoot = '',
+  ) {
+    this.logger.debug('call to create Third Party incentives...');
+    const createThridPartyDistribution = this.ethersService
+      .getLPThirdPartyDistributionSmartContract()
+      .createDrop(token, tokenAmount, merkleTreeRoot, ipfsHash);
+
+    this.logger.debug(
+      'transaction successfully submitted ' + createThridPartyDistribution.hash,
+    );
+    const receipt = await createThridPartyDistribution.wait();
+    this.logger.debug(
+      'transaction accepted by the network ' +
+        createThridPartyDistribution.hash,
+    );
+    return receipt;
+  }
+
   async generateMerkleeTree(tree: string[][]) {
     console.log(tree);
     const treee = [
@@ -506,7 +510,9 @@ export class RewardService {
     nestedPools: string[] = [],
   ) {
     this.logger.debug('get epoch daily block numbers...');
-    const weeklyBlockNumbers = await this.getEpochSnapshots(epoch);
+    const weeklyBlockNumbers = [
+      (await this.ethersService.getBlockNumber()) - 1000,
+    ];
     this.logger.debug('done getting epoch daily block numbers...');
     this.logger.debug('started calculating process...');
 
@@ -528,7 +534,7 @@ export class RewardService {
         'LP Third Party Reward Distribution',
         epoch,
       );
-      // console.log(content.merkleTree.values);
+      // console.log(JSON.stringify(content.merkleTree.values));
       return content;
     } else {
       this.logger.debug('could not generate ipfs content');
