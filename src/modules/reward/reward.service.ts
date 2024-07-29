@@ -428,7 +428,7 @@ export class RewardService {
       } else {
         total = total.sub(element.valueUSD);
       }
-      if (total.toNumber() > 20) {
+      if (total.toNumber() >= 1) {
         return {
           status: 0,
           data: { timestamp: element.timestamp, tx: element.tx },
