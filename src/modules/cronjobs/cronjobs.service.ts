@@ -9,7 +9,7 @@ export class CronjobsService {
 
   constructor(private readonly rewardService: RewardService) {}
 
-  @Cron('29 12 * * *') // every day at 2:29 PM CET
+  //   @Cron('29 12 * * *') // every day at 2:29 PM CET
   async dailyReward() {
     this.logger.debug('Running daily reward cron');
     try {
