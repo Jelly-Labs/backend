@@ -43,10 +43,8 @@ export class OfficialPoolService {
         (acc, pool) => acc + parseInt(pool.officialPoolWeight),
         0,
       );
-
       for (const officialPool of subGraphPools.pools) {
-        const result = await this.processOfficialPool(
-          officialPool.address,
+        const result = await this.processPool(
           officialPool.id,
           blockNumber,
           officialPool.officialPoolWeight,
@@ -253,7 +251,12 @@ export class OfficialPoolService {
     return { shares, totalShares: totalShares };
   }
 
-  private async processPool(officialPoolId: string, blockNumber: number) {
+  private async processPool(
+    officialPoolId: string,
+    blockNumber: number,
+    officialPoolWeight = '1',
+    totalWeight = 1,
+  ) {
     const { shares, totalShares } = await this.fetchPoolShares(
       officialPoolId,
       blockNumber,
@@ -262,19 +265,28 @@ export class OfficialPoolService {
     return await this.processSharesPerPool({
       shares,
       totalShares,
+      officialPoolWeight,
+      totalWeight,
     });
   }
 
   private async processSharesPerPool({
     shares,
     totalShares,
+    officialPoolWeight,
+    totalWeight,
   }: {
     shares: PoolShare[];
     totalShares: string;
+    officialPoolWeight: string;
+    totalWeight: number;
   }): Promise<NestedObject> {
     const result = {};
     for (const share of shares) {
-      const lpShare = new Decimal(share.balance).div(totalShares);
+      const lpShare = new Decimal(share.balance)
+        .div(totalShares)
+        .mul(officialPoolWeight)
+        .div(totalWeight);
       if (!result[share.userAddress.id]) {
         result[share.userAddress.id] = new Decimal(0);
       }
