@@ -139,7 +139,8 @@ export class OfficialPoolService {
     nestedPoolAddress: string,
   ): NestedObject {
     const result: NestedObject = {};
-    const vaultAddress = '0x428aec7c1e0c9a52686774434a1d6de5134ac529';
+    const vaultAddress =
+      '0xFB43069f6d0473B85686a85F4Ce4Fc1FD8F008750xFB43069f6d0473B85686a85F4Ce4Fc1FD8F00875';
     let nestedPoolAmount = new Decimal(0);
 
     for (const blocknumber in object) {
