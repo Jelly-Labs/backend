@@ -20,7 +20,7 @@ export class CronjobsService {
     }
   }
 
-  @Cron('30 12 * * 2') // every Tuesday at 2:30 PM CETs
+  @Cron('36 13 * * 2') // every Tuesday at 3:36 PM CETs
   async weeklyMinter() {
     this.logger.debug('Running weekly Jelly inflation reward cron');
     try {
