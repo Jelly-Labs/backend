@@ -87,7 +87,8 @@ export class OfficialPoolService {
           blockNumber: blockNumber,
         },
       );
-      nestedPoolAddress = subGraphNestedPools.pools[0].address;
+      if (subGraphNestedPools.pools.length > 0)
+        nestedPoolAddress = subGraphNestedPools.pools[0].address;
       subGraphPools.pools.push(...subGraphNestedPools.pools);
       for (const incentivisedPool of subGraphPools.pools) {
         const result = await this.processPool(incentivisedPool.id, blockNumber);
