@@ -27,7 +27,13 @@ export const GET_POOLS_SHARES_QUERY = graphql(`
       where: $where
       block: { number: $blockNumber }
     ) {
-      shares(first: 1000, skip: $skip, orderBy: balance, orderDirection: desc) {
+      shares(
+        first: 1000
+        skip: $skip
+        orderBy: balance
+        orderDirection: desc
+        where: { balance_gt: "0" }
+      ) {
         userAddress {
           id
         }

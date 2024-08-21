@@ -64,6 +64,12 @@ export class RewardService {
         proposalDescription,
         '3600',
         '86400',
+        {
+          gasLimit: ethers.utils.hexlify(2100000), // Increase if necessary
+          gasPrice: ethers.utils.hexlify(
+            ethers.utils.parseUnits('100', 'gwei'),
+          ),
+        },
       );
 
     this.logger.debug(
@@ -217,6 +223,12 @@ export class RewardService {
         proposalDescription,
         '3600',
         '86400',
+        {
+          gasLimit: ethers.utils.hexlify(2100000), // Increase if necessary
+          gasPrice: ethers.utils.hexlify(
+            ethers.utils.parseUnits('100', 'gwei'),
+          ),
+        },
       );
 
     this.logger.debug(
@@ -440,6 +452,7 @@ export class RewardService {
 
   async weeklyLPThirdPartyRewardsDistributionSnapshot(
     epoch = '0',
+    dropID = '0',
     tokenAmount = '0',
     incentivisedPool = [],
     nestedPools = [],
@@ -447,6 +460,7 @@ export class RewardService {
     const content =
       await this.weeklyLPThirdPartyRewardsDistributionSnapshotIPFSData(
         epoch,
+        dropID,
         tokenAmount,
         incentivisedPool,
         nestedPools,
@@ -500,6 +514,7 @@ export class RewardService {
   }
   async weeklyLPThirdPartyRewardsDistributionSnapshotIPFSData(
     epoch = '0',
+    dropID = '0',
     tokenAmount = '0',
     incentivisedPools: string[] = [],
     nestedPools: string[] = [],
@@ -525,7 +540,7 @@ export class RewardService {
         calculateWeeklyRewardInPercentageInPool,
         weeklyBlockNumbers,
         'LP Third Party Reward Distribution',
-        epoch,
+        dropID,
       );
       // console.log(JSON.stringify(content.merkleTree.values));
       return content;

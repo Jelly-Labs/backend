@@ -45,8 +45,7 @@ export class OfficialPoolService {
       );
 
       for (const officialPool of subGraphPools.pools) {
-        const result = await this.processOfficialPool(
-          officialPool.address,
+        const result = await this.processPool(
           officialPool.id,
           blockNumber,
           officialPool.officialPoolWeight,
@@ -140,12 +139,12 @@ export class OfficialPoolService {
   ): NestedObject {
     const result: NestedObject = {};
     const vaultAddress =
-      '0xFB43069f6d0473B85686a85F4Ce4Fc1FD8F008750xFB43069f6d0473B85686a85F4Ce4Fc1FD8F00875';
-    let nestedPoolAmount = new Decimal(0);
+      '0xFB43069f6d0473B85686a85F4Ce4Fc1FD8F00875'.toLowerCase();
 
     for (const blocknumber in object) {
       result[blocknumber] = {};
 
+      let nestedPoolAmount = new Decimal(0);
       for (const poolAddress in object[blocknumber] as NestedObject) {
         for (const lpAddress in object[blocknumber][poolAddress]) {
           if (lpAddress == vaultAddress) {
@@ -254,7 +253,12 @@ export class OfficialPoolService {
     return { shares, totalShares: totalShares };
   }
 
-  private async processPool(officialPoolId: string, blockNumber: number) {
+  private async processPool(
+    officialPoolId: string,
+    blockNumber: number,
+    officialPoolWeight = '1',
+    totalWeight = 1,
+  ) {
     const { shares, totalShares } = await this.fetchPoolShares(
       officialPoolId,
       blockNumber,
@@ -263,19 +267,28 @@ export class OfficialPoolService {
     return await this.processSharesPerPool({
       shares,
       totalShares,
+      officialPoolWeight,
+      totalWeight,
     });
   }
 
   private async processSharesPerPool({
     shares,
     totalShares,
+    officialPoolWeight,
+    totalWeight,
   }: {
     shares: PoolShare[];
     totalShares: string;
+    officialPoolWeight: string;
+    totalWeight: number;
   }): Promise<NestedObject> {
     const result = {};
     for (const share of shares) {
-      const lpShare = new Decimal(share.balance).div(totalShares);
+      const lpShare = new Decimal(share.balance)
+        .div(totalShares)
+        .mul(officialPoolWeight)
+        .div(totalWeight);
       if (!result[share.userAddress.id]) {
         result[share.userAddress.id] = new Decimal(0);
       }
