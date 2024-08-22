@@ -65,7 +65,7 @@ export class RewardService {
         '3600',
         '86400',
         {
-          gasLimit: ethers.utils.hexlify(2100000), // Increase if necessary
+          gasLimit: ethers.utils.hexlify(1000000), // Increase if necessary
           gasPrice: ethers.utils.hexlify(
             ethers.utils.parseUnits('100', 'gwei'),
           ),
@@ -224,7 +224,7 @@ export class RewardService {
         '3600',
         '86400',
         {
-          gasLimit: ethers.utils.hexlify(2100000), // Increase if necessary
+          gasLimit: ethers.utils.hexlify(1000000), // Increase if necessary
           gasPrice: ethers.utils.hexlify(
             ethers.utils.parseUnits('100', 'gwei'),
           ),
@@ -359,12 +359,18 @@ export class RewardService {
   async postDailySnapshot() {
     const transaction = this.ethersService
       .getDailySnapshotContract()
-      .dailySnapshot();
+      .dailySnapshot({
+        gasLimit: ethers.utils.hexlify(100000), // Increase if necessary
+        gasPrice: ethers.utils.hexlify(ethers.utils.parseUnits('100', 'gwei')),
+      });
     return transaction;
   }
 
   async mintWeeklyJellyInflation() {
-    const transaction = this.ethersService.getMinterSmartContract().mint();
+    const transaction = this.ethersService.getMinterSmartContract().mint({
+      gasLimit: ethers.utils.hexlify(200000), // Increase if necessary
+      gasPrice: ethers.utils.hexlify(ethers.utils.parseUnits('100', 'gwei')),
+    });
     return transaction;
   }
 
