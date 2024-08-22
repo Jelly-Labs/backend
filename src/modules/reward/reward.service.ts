@@ -404,6 +404,9 @@ export class RewardService {
     for (const key in object) {
       const innerDict = object[key];
       for (const address in innerDict as NestedObject) {
+        if (innerDict[address][1].toString() === '0') {
+          continue;
+        }
         if (!summedValues[innerDict[address][0]]) {
           summedValues[innerDict[address][0]] = new Decimal(0);
         }

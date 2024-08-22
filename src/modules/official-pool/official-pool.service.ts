@@ -185,6 +185,9 @@ export class OfficialPoolService {
     for (const key in object) {
       const innerDict = object[key];
       for (const address in innerDict as NestedObject) {
+        if (innerDict[address].toString() === '0') {
+          continue;
+        }
         if (!summedValues[address]) {
           summedValues[address] = new Decimal(0);
         }
