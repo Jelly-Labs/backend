@@ -390,11 +390,32 @@ export class RewardService {
 
   async getEpochSnapshots(epoch = '0') {
     const weeklySnapshots = [];
-    for (let i = 0; i < 7; i++) {
-      weeklySnapshots[i] = await this.ethersService
-        .getDailySnapshotContract()
-        .dailySnapshotsPerEpoch(epoch, i);
+    const epochNumber = new Decimal(epoch);
+    if (epochNumber.lessThan(10)) {
+      for (let i = 0; i < 7; i++) {
+        weeklySnapshots[i] = await this.ethersService
+          .getDailySnapshotContract()
+          .dailySnapshotsPerEpoch(epoch, i);
+      }
+    } else {
+      for (let i = 0; i < 7; i++) {
+        const timestamp = await this.ethersService
+          .getDailySnapshotContract()
+          .dailySnapshotsPerEpoch(epoch, i);
+        if (timestamp == 0) {
+          this.logger.error(
+            'One of the Epoch Snapshot Timestamps is 0. Please Check Daily Snapshot Contract: ',
+            this.ethersService.getDailySnapshotContract().address,
+          );
+          return [];
+        }
+        weeklySnapshots[i] = await this.ethersService.findClosestBlock(
+          timestamp,
+          98017706,
+        );
+      }
     }
+
     return weeklySnapshots;
   }
 
