@@ -77,8 +77,25 @@ export class AppController {
   @Get('bitget-liquidity-check')
   async getBitgetLiquidity(@Query() query: { address: string }) {
     try {
-      const result = await this.rewardService.bitgetUsersLiquidity(
+      const bitgetCampaignLiquidityLimit = 1;
+      const result = await this.rewardService.checkUserLiquidity(
         query.address.toLowerCase(),
+        bitgetCampaignLiquidityLimit,
+      );
+
+      return result;
+    } catch {
+      return { status: 1, data: {}, message: 'Error' };
+    }
+  }
+
+  @Get('okx-liquidity-check')
+  async getOkxLiquidity(@Query() query: { address: string }) {
+    try {
+      const okxCampaignLiquidityLimit = 1;
+      const result = await this.rewardService.checkUserLiquidity(
+        query.address.toLowerCase(),
+        okxCampaignLiquidityLimit,
       );
 
       return result;

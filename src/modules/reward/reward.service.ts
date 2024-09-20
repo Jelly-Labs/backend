@@ -452,7 +452,7 @@ export class RewardService {
     return formattedData;
   }
 
-  async bitgetUsersLiquidity(userAddres: string) {
+  async checkUserLiquidity(userAddres: string, amount: number) {
     const joinsAndExits: JoinExits = await this.qqlService.request(
       GET_JOIN_EXITS_PER_ADDRESS,
       {
@@ -470,7 +470,7 @@ export class RewardService {
       } else {
         total = total.sub(element.valueUSD);
       }
-      if (total.toNumber() >= 1) {
+      if (total.toNumber() >= amount) {
         return {
           status: 0,
           data: { timestamp: element.timestamp, tx: element.tx },
