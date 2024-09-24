@@ -98,9 +98,9 @@ export class AppController {
         okxCampaignLiquidityLimit,
       );
 
-      return result;
+      return { code: 0, data: !result.status };
     } catch {
-      return { status: 1, data: {}, message: 'Error' };
+      return { code: 0, data: false };
     }
   }
 
