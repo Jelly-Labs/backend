@@ -505,16 +505,53 @@ export class RewardService {
       return returnValue;
     }
   }
+
+  async checkDrop(
+    ipfsHash: string,
+    merkleTreeRoot: string,
+    dropId: Decimal
+  ) {
+    const readDropId = await this.ethersService
+      .getLPThirdPartyDistributionSmartContract()
+      .dropId();
+    const contractDropId = new Decimal(readDropId._hex);
+
+    const ipfsData = await this.ipfs.getAllContent(ipfsHash);
+    const ipfsDropId = new Decimal(ipfsData.epoch);
+    const ipfsMerkleTreeRoot = ipfsData.merkleTreeRoot;
+
+    if (merkleTreeRoot !== ipfsMerkleTreeRoot) {
+      throw new Error(`merkle tree root provided (${merkleTreeRoot}) doesn't match the merkle tree root from ipfs data (${ipfsMerkleTreeRoot})`);
+    }
+
+    if (dropId.comparedTo(ipfsDropId)) {
+      throw new Error(`drop id provided (${dropId}) doesn't match the drop id from ipfs data (${ipfsDropId})`);
+    }
+
+    if (dropId.comparedTo(contractDropId)) {
+      throw new Error(`drop id provided (${dropId}) doesn't match the drop id from the contract (${contractDropId})`);
+    }
+
+    this.logger.log("Drop correct");
+  }
+
   async weeklyLPThirdPartyRewardsDistributionSnapshotPost(
     token = '0x0',
     tokenAmount = '0',
     ipfsHash = '',
     merkleTreeRoot = '',
+    dropId = '0',
   ) {
     this.logger.debug('call to create Third Party incentives...');
-    const createThridPartyDistribution = this.ethersService
+
+    await this.checkDrop(ipfsHash, merkleTreeRoot, new Decimal(dropId));
+
+    const createThridPartyDistribution = await this.ethersService
       .getLPThirdPartyDistributionSmartContract()
-      .createDrop(token, tokenAmount, merkleTreeRoot, ipfsHash);
+      .createDrop(token, tokenAmount, merkleTreeRoot, ipfsHash, {
+        gasLimit: ethers.utils.hexlify(1000000), // Increase if necessary
+        gasPrice: ethers.utils.hexlify(ethers.utils.parseUnits('100', 'gwei')),
+      });
 
     this.logger.debug(
       'transaction successfully submitted ' + createThridPartyDistribution.hash,

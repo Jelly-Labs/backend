@@ -111,4 +111,114 @@ export class AppController {
 
     return { stakingEpoch, lPEpoch };
   }
+
+  @Post('partners-reward-distribution-snapshot')
+  async postPartnersRewardDistributionSnapshot(
+    @Body()
+    body: {
+      epoch: string;
+      dropId: string;
+      amount: string;
+      incentivisedPools: string[];
+      nestedPools: string[];
+    },
+  ) {
+    console.log(`epoch = ${body.epoch}`);
+    console.log(`dropId = ${body.dropId}`);
+    console.log(`amount = ${body.amount}`);
+    console.log(`incentivisedPools = ${body.incentivisedPools}`);
+    console.log(`nestedPools = ${body.nestedPools}`);
+
+    const result =
+      await this.rewardService.weeklyLPThirdPartyRewardsDistributionSnapshot(
+        body.epoch,
+        body.dropId,
+        body.amount,
+        body.incentivisedPools,
+        body.nestedPools,
+      );
+
+    return result;
+  }
+
+  @Post('partners-reward-distribution-snapshot-post')
+  async postPartnersRewardDistributionSnapshotPost(
+    @Body()
+    body: {
+      ipfsHash: string;
+      token: string;
+      amount: string;
+      merkleTreeRoot: string;
+      dropId: string;
+    },
+  ) {
+    const result =
+      await this.rewardService.weeklyLPThirdPartyRewardsDistributionSnapshotPost(
+        body.token,
+        body.amount,
+        body.ipfsHash,
+        body.merkleTreeRoot,
+        body.dropId,
+      );
+
+    return result;
+  }
+  @Post('lp-reward-distribution-snapshot')
+  async getLPRewardDistributionSnapshot(
+    @Body() body: { epoch: string; lpRewardContractAddress: string },
+  ) {
+    const result = await this.rewardService.weeklyLPRewardsDistributionSnapshot(
+      body.epoch,
+    );
+
+    return result;
+  }
+
+  @Post('staking-reward-distribution-snapshot')
+  async postStakingRewardDistributionSnapshot(@Body() body: { epoch: string }) {
+    const result =
+      await this.rewardService.weeklyStakingRewardsDistributionSnapshot(
+        body.epoch,
+      );
+
+    return result;
+  }
+
+  @Post('lp-reward-distribution-snapshot-post')
+  async getLPRewardDistributionSnapshotPost(
+    @Body()
+    body: {
+      merkleTreeRoot: string;
+      ipfsHash: string;
+      description: string;
+    },
+  ) {
+    const result =
+      await this.rewardService.weeklyLPRewardsDistributionSnapshotPost(
+        body.merkleTreeRoot,
+        body.ipfsHash,
+        body.description,
+      );
+
+    return result;
+  }
+
+  @Post('staking-reward-distribution-snapshot-post')
+  async postStakingRewardDistributionSnapshotPost(
+    @Body()
+    body: {
+      merkleTreeRoot: string;
+      ipfsHash: string;
+      description: string;
+    },
+  ) {
+    const result =
+      await this.rewardService.weeklyStakingRewardsDistributionSnapshotPost(
+        body.merkleTreeRoot,
+        body.ipfsHash,
+        body.description,
+      );
+
+    return result;
+  }
 }
