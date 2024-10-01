@@ -3,7 +3,7 @@ import Decimal from 'decimal.js';
 import { utils } from 'ethers';
 // import { utils } from 'ethers';
 
-import { PoolShare } from '../../gql/graphql';
+import { Pool, PoolShare } from '../../gql/graphql';
 import { NestedObject, Pools } from '../../types/interface';
 import { EthersService } from '../ethers/ethers.service';
 import { QqlService } from '../qql/qql.service';
@@ -68,7 +68,6 @@ export class OfficialPoolService {
     totalAllocation: string,
   ): Promise<string[][]> {
     const resultObject = {};
-    let nestedPoolAddress = '';
     for (const blockNumber of weeklyBlockNumbers) {
       resultObject[blockNumber] = {};
 
@@ -87,18 +86,31 @@ export class OfficialPoolService {
           blockNumber: blockNumber,
         },
       );
-      if (subGraphNestedPools.pools.length > 0)
-        nestedPoolAddress = subGraphNestedPools.pools[0].address;
+
       subGraphPools.pools.push(...subGraphNestedPools.pools);
+
+      const mainPool = subGraphPools.pools[0];
+
       for (const incentivisedPool of subGraphPools.pools) {
-        const result = await this.processPool(incentivisedPool.id, blockNumber);
+        // check if the current pool is a nested pool
+        const nestedPool = subGraphNestedPools.pools.find((pool) => pool.address === incentivisedPool.address);
+        let poolFactor = 1;
+        if (nestedPool) {
+          // get the main pool's lp token info from the nested pool
+          const nestedLpToken = nestedPool?.tokens.find((token) => token.address === mainPool.address);
+          // calculate the factor as main pool's lp token balance inside the nested pool
+          // divided by total shares (actual supply of the lp token)
+          poolFactor = (nestedLpToken?.balance ?? 0) / mainPool.totalShares;
+        }
+
+        // process pool and pass the factor as the pool weight
+        const result = await this.processPool(incentivisedPool.id, blockNumber, poolFactor.toString());
         resultObject[blockNumber][incentivisedPool.address] = result;
       }
     }
 
     const sumAllLp = this.sumAllLpPercentInPoolPerBlockNumberWithNesting(
       resultObject,
-      nestedPoolAddress,
     );
 
     return this.sumAllLpPercent(sumAllLp, totalAllocation);
@@ -136,7 +148,6 @@ export class OfficialPoolService {
    */
   private sumAllLpPercentInPoolPerBlockNumberWithNesting(
     object: NestedObject,
-    nestedPoolAddress: string,
   ): NestedObject {
     const result: NestedObject = {};
     const vaultAddress =
@@ -145,24 +156,15 @@ export class OfficialPoolService {
     for (const blocknumber in object) {
       result[blocknumber] = {};
 
-      let nestedPoolAmount = new Decimal(0);
       for (const poolAddress in object[blocknumber] as NestedObject) {
         for (const lpAddress in object[blocknumber][poolAddress]) {
           if (lpAddress == vaultAddress) {
-            nestedPoolAmount = nestedPoolAmount.add(
-              object[blocknumber][poolAddress][lpAddress],
-            );
-          } else if (poolAddress == nestedPoolAddress) {
-            const normalizedValue =
-              object[blocknumber][poolAddress][lpAddress].mul(nestedPoolAmount);
-            result[blocknumber][lpAddress] = (
-              (result[blocknumber][lpAddress] as Decimal) || new Decimal(0)
-            ).add(normalizedValue);
-          } else {
-            result[blocknumber][lpAddress] = (
-              (result[blocknumber][lpAddress] as Decimal) || new Decimal(0)
-            ).add(object[blocknumber][poolAddress][lpAddress]);
+            continue;
           }
+
+          result[blocknumber][lpAddress] = (result[blocknumber][lpAddress] as Decimal) || new Decimal(0);
+          const rewardsFromPool = object[blocknumber][poolAddress][lpAddress];
+          result[blocknumber][lpAddress].add(rewardsFromPool);
         }
       }
     }
