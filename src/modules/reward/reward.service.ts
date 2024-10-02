@@ -484,7 +484,7 @@ export class RewardService {
     epoch = '0',
     dropID = '0',
     tokenAmount = '0',
-    incentivisedPool = [],
+    incentivisedPool = '',
     nestedPools = [],
   ) {
     const content =
@@ -583,7 +583,7 @@ export class RewardService {
     epoch = '0',
     dropID = '0',
     tokenAmount = '0',
-    incentivisedPools: string[] = [],
+    incentivisedPool: string = '',
     nestedPools: string[] = [],
   ) {
     this.logger.debug('get epoch daily block numbers...');
@@ -594,7 +594,7 @@ export class RewardService {
     const calculateWeeklyRewardInPercentageInPool =
       await this.officialPoolService.calculateWeeklyLPThirdPartyRewardsDistribution(
         weeklyBlockNumbers,
-        incentivisedPools,
+        incentivisedPool,
         nestedPools,
         tokenAmount,
       );

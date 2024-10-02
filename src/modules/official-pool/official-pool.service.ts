@@ -63,7 +63,7 @@ export class OfficialPoolService {
 
   async calculateWeeklyLPThirdPartyRewardsDistribution(
     weeklyBlockNumbers: number[],
-    incentivisedPools: string[],
+    incentivisedPool: string,
     nestedPools: string[],
     totalAllocation: string,
   ): Promise<string[][]> {
@@ -74,10 +74,14 @@ export class OfficialPoolService {
       const subGraphPools: Pools = await this.qqlService.request(
         GET_POOLS_QUERY,
         {
-          where: { id_in: incentivisedPools },
+          where: { id: incentivisedPool },
           blockNumber: blockNumber,
         },
       );
+      if (subGraphPools.pools.length <= 0) {
+        throw new Error(`No pool with id ${incentivisedPool}`);
+      }
+      const mainPool = subGraphPools.pools[0];
 
       const subGraphNestedPools: Pools = await this.qqlService.request(
         GET_POOLS_QUERY,
@@ -86,10 +90,8 @@ export class OfficialPoolService {
           blockNumber: blockNumber,
         },
       );
-
       subGraphPools.pools.push(...subGraphNestedPools.pools);
 
-      const mainPool = subGraphPools.pools[0];
 
       for (const incentivisedPool of subGraphPools.pools) {
         // check if the current pool is a nested pool
@@ -162,9 +164,9 @@ export class OfficialPoolService {
             continue;
           }
 
-          result[blocknumber][lpAddress] = (result[blocknumber][lpAddress] as Decimal) || new Decimal(0);
+          const previousRewards = (result[blocknumber][lpAddress] as Decimal) || new Decimal(0);
           const rewardsFromPool = object[blocknumber][poolAddress][lpAddress];
-          result[blocknumber][lpAddress].add(rewardsFromPool);
+          result[blocknumber][lpAddress] = previousRewards.add(rewardsFromPool);
         }
       }
     }

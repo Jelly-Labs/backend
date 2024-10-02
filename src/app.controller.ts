@@ -119,14 +119,14 @@ export class AppController {
       epoch: string;
       dropId: string;
       amount: string;
-      incentivisedPools: string[];
+        incentivisedPool: string;
       nestedPools: string[];
     },
   ) {
     console.log(`epoch = ${body.epoch}`);
     console.log(`dropId = ${body.dropId}`);
     console.log(`amount = ${body.amount}`);
-    console.log(`incentivisedPools = ${body.incentivisedPools}`);
+    console.log(`incentivisedPool = ${body.incentivisedPool}`);
     console.log(`nestedPools = ${body.nestedPools}`);
 
     const result =
@@ -134,7 +134,7 @@ export class AppController {
         body.epoch,
         body.dropId,
         body.amount,
-        body.incentivisedPools,
+        body.incentivisedPool,
         body.nestedPools,
       );
 
