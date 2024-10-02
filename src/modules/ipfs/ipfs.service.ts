@@ -62,6 +62,32 @@ export class IpfsService {
   }
 
   /**
+   * Fetches content from IPFS based on the provided IPFS hash.
+   *
+   * @param {string} ipfsHash - The IPFS hash to fetch content from.
+   * @returns {Promise<number>} - A Promise resolving to the epoch value.
+   */
+  async getEpoch(ipfsHash: string): Promise<any> {
+    const ipfsJSON = await fetch(`https://ipfs.io/ipfs/${ipfsHash}`);
+    const content = await ipfsJSON.json();
+
+    return content.epoch;
+  }
+
+  /**
+   * Fetches content from IPFS based on the provided IPFS hash.
+   *
+   * @param {string} ipfsHash - The IPFS hash to fetch content from.
+   * @returns {Promise<Object>} - A Promise resolving to the loaded StandardMerkleTree.
+   */
+  async getAllContent(ipfsHash: string): Promise<any> {
+    const ipfsJSON = await fetch(`https://ipfs.io/ipfs/${ipfsHash}`);
+    const content = await ipfsJSON.json();
+
+    return content;
+  }
+
+  /**
    * Generates a Merkle root from a list of nodes and saves the tree structure to a JSON file.
    *
    * @param {string[][]} nodes - An array of nodes, where each node is an array of strings.
