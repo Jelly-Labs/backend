@@ -92,7 +92,7 @@ export class AppController {
   @Get('okx-liquidity-check')
   async getOkxLiquidity(@Query() query: { address: string }) {
     try {
-      const okxCampaignLiquidityLimit = 1;
+      const okxCampaignLiquidityLimit = 5; // 5 USD
       const result = await this.rewardService.checkUserLiquidity(
         query.address.toLowerCase(),
         okxCampaignLiquidityLimit,
