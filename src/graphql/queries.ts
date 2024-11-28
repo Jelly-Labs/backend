@@ -11,6 +11,11 @@ export const GET_POOLS_QUERY = graphql(`
       id
       address
       officialPoolWeight
+      totalShares
+      tokens(first: 1000) {
+        address
+        balance
+      }
     }
   }
 `);
