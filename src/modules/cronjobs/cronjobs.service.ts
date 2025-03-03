@@ -20,16 +20,16 @@ export class CronjobsService {
     }
   }
 
-  @Cron('30 12 * * 2') // every Tuesday at 2:30 PM CETs
-  async weeklyMinter() {
-    this.logger.debug('Running weekly Jelly inflation reward cron');
-    try {
-      await this.rewardService.mintWeeklyJellyInflation();
-      this.logger.debug('weekly Jelly inflation reward cron finished');
-    } catch (error) {
-      this.logger.error('weekly Jelly inflation reward cron failed: ' + error);
-    }
-  }
+  // @Cron('30 12 * * 2') // every Tuesday at 2:30 PM CETs
+  // async weeklyMinter() {
+  //   this.logger.debug('Running weekly Jelly inflation reward cron');
+  //   try {
+  //     await this.rewardService.mintWeeklyJellyInflation();
+  //     this.logger.debug('weekly Jelly inflation reward cron finished');
+  //   } catch (error) {
+  //     this.logger.error('weekly Jelly inflation reward cron failed: ' + error);
+  //   }
+  // }
 
   // @Cron('0 13 * * 2') // every Tuesday at 3:00 PM CET
   async weeklyLPReward() {
